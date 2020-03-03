@@ -1,0 +1,200 @@
+EESchema Schematic File Version 4
+EELAYER 30 0
+EELAYER END
+$Descr A4 11693 8268
+encoding utf-8
+Sheet 1 2
+Title "VU-Meter"
+Date "2020-03-03"
+Rev ""
+Comp ""
+Comment1 ""
+Comment2 ""
+Comment3 ""
+Comment4 ""
+$EndDescr
+$Comp
+L MCU_ST_STM32G0:STM32G071KBTx U?
+U 1 1 5E7CDB46
+P 4300 3250
+F 0 "U?" H 3850 4150 50  0000 C CNN
+F 1 "STM32G071KBTx" H 4700 4150 50  0000 C CNN
+F 2 "Package_QFP:LQFP-32_7x7mm_P0.8mm" H 3100 1700 50  0001 C CNN
+F 3 "https://www.st.com/resource/en/datasheet/stm32g071kb.pdf" H 4300 3250 50  0001 C CNN
+	1    4300 3250
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+3.3V #PWR?
+U 1 1 5E7D0C55
+P 4100 2200
+F 0 "#PWR?" H 4100 2050 50  0001 C CNN
+F 1 "+3.3V" H 4115 2373 50  0000 C CNN
+F 2 "" H 4100 2200 50  0001 C CNN
+F 3 "" H 4100 2200 50  0001 C CNN
+	1    4100 2200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4100 2200 4100 2300
+$Comp
+L power:GND #PWR?
+U 1 1 5E7D1E28
+P 4100 4400
+F 0 "#PWR?" H 4100 4150 50  0001 C CNN
+F 1 "GND" H 4105 4227 50  0000 C CNN
+F 2 "" H 4100 4400 50  0001 C CNN
+F 3 "" H 4100 4400 50  0001 C CNN
+	1    4100 4400
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	4100 4300 4100 4400
+$Comp
+L power:+3.3V #PWR?
+U 1 1 5E7D290C
+P 1700 1300
+F 0 "#PWR?" H 1700 1150 50  0001 C CNN
+F 1 "+3.3V" H 1715 1473 50  0000 C CNN
+F 2 "" H 1700 1300 50  0001 C CNN
+F 3 "" H 1700 1300 50  0001 C CNN
+	1    1700 1300
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 5E7D35E6
+P 1700 1800
+F 0 "#PWR?" H 1700 1550 50  0001 C CNN
+F 1 "GND" H 1705 1627 50  0000 C CNN
+F 2 "" H 1700 1800 50  0001 C CNN
+F 3 "" H 1700 1800 50  0001 C CNN
+	1    1700 1800
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C?
+U 1 1 5E7D3EA0
+P 1700 1550
+F 0 "C?" H 1815 1596 50  0000 L CNN
+F 1 "100n" H 1815 1505 50  0000 L CNN
+F 2 "" H 1738 1400 50  0001 C CNN
+F 3 "~" H 1700 1550 50  0001 C CNN
+	1    1700 1550
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:CP C?
+U 1 1 5E7D4EDD
+P 2100 1550
+F 0 "C?" H 2218 1596 50  0000 L CNN
+F 1 "4.7u" H 2218 1505 50  0000 L CNN
+F 2 "" H 2138 1400 50  0001 C CNN
+F 3 "~" H 2100 1550 50  0001 C CNN
+	1    2100 1550
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1700 1300 1700 1350
+Wire Wire Line
+	1700 1700 1700 1750
+Wire Wire Line
+	1700 1750 2100 1750
+Wire Wire Line
+	2100 1750 2100 1700
+Connection ~ 1700 1750
+Wire Wire Line
+	1700 1750 1700 1800
+Wire Wire Line
+	2100 1400 2100 1350
+Wire Wire Line
+	2100 1350 1700 1350
+Connection ~ 1700 1350
+Wire Wire Line
+	1700 1350 1700 1400
+Wire Wire Line
+	3250 2550 3100 2550
+Connection ~ 3250 2550
+$Comp
+L Connector:Conn_01x06_Male J?
+U 1 1 5E7DAFCF
+P 3650 1400
+F 0 "J?" H 3758 1781 50  0000 C CNN
+F 1 "Conn_01x06_Male" H 3758 1690 50  0000 C CNN
+F 2 "" H 3650 1400 50  0001 C CNN
+F 3 "~" H 3650 1400 50  0001 C CNN
+	1    3650 1400
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:C C?
+U 1 1 5E7DCB42
+P 3050 2900
+F 0 "C?" V 2798 2900 50  0000 C CNN
+F 1 "100n" V 2889 2900 50  0000 C CNN
+F 2 "" H 3088 2750 50  0001 C CNN
+F 3 "~" H 3050 2900 50  0001 C CNN
+	1    3050 2900
+	0    1    1    0   
+$EndComp
+$Comp
+L power:GND #PWR?
+U 1 1 5E7DD63C
+P 2850 3050
+F 0 "#PWR?" H 2850 2800 50  0001 C CNN
+F 1 "GND" H 2855 2877 50  0000 C CNN
+F 2 "" H 2850 3050 50  0001 C CNN
+F 3 "" H 2850 3050 50  0001 C CNN
+	1    2850 3050
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	3250 2550 3250 2900
+Wire Wire Line
+	3250 2900 3200 2900
+Wire Wire Line
+	2900 2900 2850 2900
+Wire Wire Line
+	2850 2900 2850 3050
+Connection ~ 2850 2900
+$Sheet
+S 7100 2400 750  1200
+U 5E7FE9D4
+F0 "VU Meter LEDs" 50
+F1 "VU_Meter_LED.sch" 50
+F2 "-20_dB" I L 7100 3500 50 
+F3 "-10_dB" I L 7100 3400 50 
+F4 "-7_dB" I L 7100 3300 50 
+F5 "-5_dB" I L 7100 3200 50 
+F6 "-3_dB" I L 7100 3100 50 
+F7 "-2_dB" I L 7100 3000 50 
+F8 "-1_dB" I L 7100 2900 50 
+F9 "0_dB" I L 7100 2800 50 
+F10 "+1_dB" I L 7100 2700 50 
+F11 "+2_dB" I L 7100 2600 50 
+F12 "+3_dB" I L 7100 2500 50 
+F13 "LEFT" I R 7850 2800 50 
+F14 "RIGHT" I R 7850 3200 50 
+$EndSheet
+$Comp
+L Connector:Conn_01x02_Male J?
+U 1 1 5EB20776
+P 3100 2250
+F 0 "J?" V 2950 2200 50  0000 C CNN
+F 1 "Conn_01x02_Male" V 3050 2200 50  0000 C CNN
+F 2 "" H 3100 2250 50  0001 C CNN
+F 3 "~" H 3100 2250 50  0001 C CNN
+	1    3100 2250
+	0    1    1    0   
+$EndComp
+Wire Wire Line
+	2850 2550 2850 2900
+Wire Wire Line
+	2850 2550 3000 2550
+Wire Wire Line
+	3000 2550 3000 2450
+Wire Wire Line
+	3100 2450 3100 2550
+Wire Wire Line
+	3250 2550 3700 2550
+$EndSCHEMATC
