@@ -215,16 +215,6 @@ Wire Wire Line
 Wire Wire Line
 	3800 4950 3600 4950
 Wire Wire Line
-	4900 4850 6550 4850
-Wire Wire Line
-	6550 4750 4900 4750
-Wire Wire Line
-	6550 4650 4900 4650
-Wire Wire Line
-	4900 4550 6550 4550
-Wire Wire Line
-	6550 4450 4900 4450
-Wire Wire Line
 	4900 4350 6550 4350
 Wire Wire Line
 	6550 4250 4900 4250
@@ -236,26 +226,6 @@ Wire Wire Line
 	4900 3950 6550 3950
 Wire Wire Line
 	4900 3850 6550 3850
-Wire Wire Line
-	4900 3650 5650 3650
-Wire Wire Line
-	5650 3650 5650 3500
-Wire Wire Line
-	5650 3500 7600 3500
-Wire Wire Line
-	7600 3500 7600 4150
-Wire Wire Line
-	7600 4150 7300 4150
-Wire Wire Line
-	4900 3750 5800 3750
-Wire Wire Line
-	5800 3750 5800 3600
-Wire Wire Line
-	5800 3600 7450 3600
-Wire Wire Line
-	7450 3600 7450 4550
-Wire Wire Line
-	7450 4550 7300 4550
 $Comp
 L Connector:Conn_01x04_Male J1
 U 1 1 5E7A2BBE
@@ -435,4 +405,54 @@ Wire Wire Line
 	4500 1650 4700 1650
 Wire Wire Line
 	4700 1650 4700 1750
+Wire Wire Line
+	4900 4650 6550 4650
+Wire Wire Line
+	6550 4450 6300 4450
+Wire Wire Line
+	6550 4850 6300 4850
+Wire Wire Line
+	5150 4850 4900 4850
+Wire Wire Line
+	6550 4550 6300 4550
+Wire Wire Line
+	5150 4750 6300 4550
+Wire Wire Line
+	4900 4750 5150 4750
+Wire Wire Line
+	6550 4750 6300 4750
+Wire Wire Line
+	5150 4450 6300 4850
+Wire Wire Line
+	5150 4450 4900 4450
+Wire Wire Line
+	5150 4550 6300 4750
+Wire Wire Line
+	5150 4550 4900 4550
+Wire Wire Line
+	5150 4850 6300 4450
+Wire Wire Line
+	4900 3750 5800 3750
+Wire Wire Line
+	5800 3750 5800 3600
+Wire Wire Line
+	5800 3600 7450 3600
+Wire Wire Line
+	7450 3600 7450 4150
+Wire Wire Line
+	3800 4350 3150 4350
+Wire Wire Line
+	3150 4350 3150 4650
+Wire Wire Line
+	3150 4650 2950 4650
+Wire Wire Line
+	2950 4650 2950 5850
+Wire Wire Line
+	2950 5850 7600 5850
+Wire Wire Line
+	7600 5850 7600 4550
+Wire Wire Line
+	7300 4150 7450 4150
+Wire Wire Line
+	7300 4550 7600 4550
 $EndSCHEMATC
