@@ -48,7 +48,7 @@ extern "C" {
 
 /* Exported macro ------------------------------------------------------------*/
 /* USER CODE BEGIN EM */
-#define COUNTOF(__BUFFER__)   (sizeof(__BUFFER__) / sizeof(*(__BUFFER__)))
+
 /* USER CODE END EM */
 
 /* Exported functions prototypes ---------------------------------------------*/
@@ -60,8 +60,7 @@ void Error_Handler(void);
 
 /* Private defines -----------------------------------------------------------*/
 /* USER CODE BEGIN Private defines */
-/* Size of Trasmission buffer */
-#define TXBUFFERSIZE                      (COUNTOF(aTxBuffer) - 1)
+
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

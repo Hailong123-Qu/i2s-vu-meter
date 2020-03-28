@@ -33,3 +33,6 @@ bom/
 
 # Gerber export output
 out/
+
+Debug/
+Release/

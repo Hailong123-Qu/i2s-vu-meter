@@ -33,7 +33,6 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define TRANSMITTER_BOARD
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -42,27 +41,25 @@
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
-UART_HandleTypeDef huart2;
+I2S_HandleTypeDef hi2s1;
+DMA_HandleTypeDef hdma_spi1_rx;
 
 /* USER CODE BEGIN PV */
-__IO uint32_t UserButtonStatus = 0;  /* set to 1 after User Button interrupt  */
-/* Buffer used for transmission */
-
-uint8_t aTxBuffer[] = " **** UART_TwoBoards_ComPolling ****  **** UART_TwoBoards_ComPolling ****  **** UART_TwoBoards_ComPolling **** ";
 
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
 void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
-static void MX_USART2_UART_Init(void);
+static void MX_DMA_Init(void);
+static void MX_I2S1_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-
+uint16_t rxBuffer[8];
 /* USER CODE END 0 */
 
 /**
@@ -94,9 +91,10 @@ int main(void)
 
   /* Initialize all configured peripherals */
   MX_GPIO_Init();
-  MX_USART2_UART_Init();
+  MX_DMA_Init();
+  MX_I2S1_Init();
   /* USER CODE BEGIN 2 */
-
+  HAL_I2S_Receive_DMA(&hi2s1, rxBuffer, 4);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -106,13 +104,6 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	/*if (HAL_UART_Transmit(&huart2, (uint8_t *)aTxBuffer, TXBUFFERSIZE, 5000) != HAL_OK)
-	{
-	  Error_Handler();
-	}*/
-
-	HAL_GPIO_TogglePin(GPIOA, GPIO_PIN_5);
-	HAL_Delay(2000);
   }
   /* USER CODE END 3 */
 }
@@ -155,8 +146,8 @@ void SystemClock_Config(void)
   }
   /** Initializes the peripherals clocks 
   */
-  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USART2;
-  PeriphClkInit.Usart2ClockSelection = RCC_USART2CLKSOURCE_PCLK1;
+  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_I2S1;
+  PeriphClkInit.I2s1ClockSelection = RCC_I2S1CLKSOURCE_SYSCLK;
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
   {
     Error_Handler();
@@ -164,50 +155,50 @@ void SystemClock_Config(void)
 }
 
 /**
-  * @brief USART2 Initialization Function
+  * @brief I2S1 Initialization Function
   * @param None
   * @retval None
   */
-static void MX_USART2_UART_Init(void)
+static void MX_I2S1_Init(void)
 {
 
-  /* USER CODE BEGIN USART2_Init 0 */
+  /* USER CODE BEGIN I2S1_Init 0 */
 
-  /* USER CODE END USART2_Init 0 */
+  /* USER CODE END I2S1_Init 0 */
 
-  /* USER CODE BEGIN USART2_Init 1 */
+  /* USER CODE BEGIN I2S1_Init 1 */
 
-  /* USER CODE END USART2_Init 1 */
-  huart2.Instance = USART2;
-  huart2.Init.BaudRate = 115200;
-  huart2.Init.WordLength = UART_WORDLENGTH_8B;
-  huart2.Init.StopBits = UART_STOPBITS_1;
-  huart2.Init.Parity = UART_PARITY_NONE;
-  huart2.Init.Mode = UART_MODE_TX_RX;
-  huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
-  huart2.Init.OverSampling = UART_OVERSAMPLING_16;
-  huart2.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
-  huart2.Init.ClockPrescaler = UART_PRESCALER_DIV1;
-  huart2.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
-  if (HAL_UART_Init(&huart2) != HAL_OK)
+  /* USER CODE END I2S1_Init 1 */
+  hi2s1.Instance = SPI1;
+  hi2s1.Init.Mode = I2S_MODE_SLAVE_RX;
+  hi2s1.Init.Standard = I2S_STANDARD_MSB;
+  hi2s1.Init.DataFormat = I2S_DATAFORMAT_32B;
+  hi2s1.Init.MCLKOutput = I2S_MCLKOUTPUT_DISABLE;
+  hi2s1.Init.AudioFreq = I2S_AUDIOFREQ_44K;
+  hi2s1.Init.CPOL = I2S_CPOL_LOW;
+  if (HAL_I2S_Init(&hi2s1) != HAL_OK)
   {
     Error_Handler();
   }
-  if (HAL_UARTEx_SetTxFifoThreshold(&huart2, UART_TXFIFO_THRESHOLD_1_8) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  if (HAL_UARTEx_SetRxFifoThreshold(&huart2, UART_RXFIFO_THRESHOLD_1_8) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  if (HAL_UARTEx_DisableFifoMode(&huart2) != HAL_OK)
-  {
-    Error_Handler();
-  }
-  /* USER CODE BEGIN USART2_Init 2 */
+  /* USER CODE BEGIN I2S1_Init 2 */
 
-  /* USER CODE END USART2_Init 2 */
+  /* USER CODE END I2S1_Init 2 */
+
+}
+
+/** 
+  * Enable DMA controller clock
+  */
+static void MX_DMA_Init(void) 
+{
+
+  /* DMA controller clock enable */
+  __HAL_RCC_DMA1_CLK_ENABLE();
+
+  /* DMA interrupt init */
+  /* DMA1_Channel1_IRQn interrupt configuration */
+  HAL_NVIC_SetPriority(DMA1_Channel1_IRQn, 0, 0);
+  HAL_NVIC_EnableIRQ(DMA1_Channel1_IRQn);
 
 }
 
@@ -222,6 +213,7 @@ static void MX_GPIO_Init(void)
 
   /* GPIO Ports Clock Enable */
   __HAL_RCC_GPIOA_CLK_ENABLE();
+  __HAL_RCC_GPIOB_CLK_ENABLE();
 
   /*Configure GPIO pin Output Level */
   HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5, GPIO_PIN_RESET);
@@ -236,7 +228,21 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+void HAL_I2S_RxHalfCpltCallback (I2S_HandleTypeDef *hi2s) {
+  volatile int32_t lSample = (int32_t) (rxBuffer[0]<<16)|rxBuffer[1];
+  volatile int32_t rSample = (int32_t) (rxBuffer[2]<<16)|rxBuffer[3];
+  if (lSample != 0 || rSample != 0) {
+    GPIOA->ODR |= 0x0020;
+  }
+}
 
+void HAL_I2S_RxCpltCallback(I2S_HandleTypeDef *hi2s) {
+  volatile int32_t lSample = (int32_t) (rxBuffer[0]<<16)|rxBuffer[1];
+  volatile int32_t rSample = (int32_t) (rxBuffer[2]<<16)|rxBuffer[3];
+  if (lSample != 0 || rSample != 0) {
+    GPIOA->ODR &= ~0x0020;
+  }
+}
 /* USER CODE END 4 */
 
 /**
