@@ -44,8 +44,10 @@
 I2S_HandleTypeDef hi2s1;
 DMA_HandleTypeDef hdma_spi1_rx;
 
-/* USER CODE BEGIN PV */
+UART_HandleTypeDef huart2;
 
+/* USER CODE BEGIN PV */
+__IO ITStatus UartReady = RESET;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -53,6 +55,7 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_DMA_Init(void);
 static void MX_I2S1_Init(void);
+static void MX_USART2_UART_Init(void);
 /* USER CODE BEGIN PFP */
 
 /* USER CODE END PFP */
@@ -60,6 +63,7 @@ static void MX_I2S1_Init(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 uint16_t rxBuffer[8];
+uint8_t aTxBuffer[10] = "R1634L1235";
 /* USER CODE END 0 */
 
 /**
@@ -93,8 +97,14 @@ int main(void)
   MX_GPIO_Init();
   MX_DMA_Init();
   MX_I2S1_Init();
+  MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
   HAL_I2S_Receive_DMA(&hi2s1, rxBuffer, 4);
+
+  char *msg = "Hello Nucleo Fun!\n\r";
+
+  HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
+
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -104,6 +114,7 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+    HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
   }
   /* USER CODE END 3 */
 }
@@ -146,7 +157,8 @@ void SystemClock_Config(void)
   }
   /** Initializes the peripherals clocks 
   */
-  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_I2S1;
+  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_USART2|RCC_PERIPHCLK_I2S1;
+  PeriphClkInit.Usart2ClockSelection = RCC_USART2CLKSOURCE_PCLK1;
   PeriphClkInit.I2s1ClockSelection = RCC_I2S1CLKSOURCE_SYSCLK;
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
   {
@@ -183,6 +195,54 @@ static void MX_I2S1_Init(void)
   /* USER CODE BEGIN I2S1_Init 2 */
 
   /* USER CODE END I2S1_Init 2 */
+
+}
+
+/**
+  * @brief USART2 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_USART2_UART_Init(void)
+{
+
+  /* USER CODE BEGIN USART2_Init 0 */
+
+  /* USER CODE END USART2_Init 0 */
+
+  /* USER CODE BEGIN USART2_Init 1 */
+
+  /* USER CODE END USART2_Init 1 */
+  huart2.Instance = USART2;
+  huart2.Init.BaudRate = 115200;
+  huart2.Init.WordLength = UART_WORDLENGTH_8B;
+  huart2.Init.StopBits = UART_STOPBITS_1;
+  huart2.Init.Parity = UART_PARITY_NONE;
+  huart2.Init.Mode = UART_MODE_TX;
+  huart2.Init.HwFlowCtl = UART_HWCONTROL_NONE;
+  huart2.Init.OverSampling = UART_OVERSAMPLING_16;
+  huart2.Init.OneBitSampling = UART_ONE_BIT_SAMPLE_DISABLE;
+  huart2.Init.ClockPrescaler = UART_PRESCALER_DIV1;
+  huart2.AdvancedInit.AdvFeatureInit = UART_ADVFEATURE_NO_INIT;
+  if (HAL_UART_Init(&huart2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_UARTEx_SetTxFifoThreshold(&huart2, UART_TXFIFO_THRESHOLD_1_8) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_UARTEx_SetRxFifoThreshold(&huart2, UART_RXFIFO_THRESHOLD_1_8) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  if (HAL_UARTEx_DisableFifoMode(&huart2) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN USART2_Init 2 */
+
+  /* USER CODE END USART2_Init 2 */
 
 }
 
@@ -229,19 +289,35 @@ static void MX_GPIO_Init(void)
 
 /* USER CODE BEGIN 4 */
 void HAL_I2S_RxHalfCpltCallback (I2S_HandleTypeDef *hi2s) {
-  volatile int32_t lSample = (int32_t) (rxBuffer[0]<<16)|rxBuffer[1];
-  volatile int32_t rSample = (int32_t) (rxBuffer[2]<<16)|rxBuffer[3];
+  volatile int32_t lSample = (int32_t) (rxBuffer[0] << 16) | rxBuffer[1];
+  volatile int32_t rSample = (int32_t) (rxBuffer[2] << 16) | rxBuffer[3];
   if (lSample != 0 || rSample != 0) {
     GPIOA->ODR |= 0x0020;
   }
 }
 
 void HAL_I2S_RxCpltCallback(I2S_HandleTypeDef *hi2s) {
-  volatile int32_t lSample = (int32_t) (rxBuffer[0]<<16)|rxBuffer[1];
-  volatile int32_t rSample = (int32_t) (rxBuffer[2]<<16)|rxBuffer[3];
+  volatile int32_t lSample = (int32_t) (rxBuffer[0] << 16) | rxBuffer[1];
+  volatile int32_t rSample = (int32_t) (rxBuffer[2] << 16) | rxBuffer[3];
   if (lSample != 0 || rSample != 0) {
     GPIOA->ODR &= ~0x0020;
   }
+}
+
+void HAL_UART_TxCpltCallback(UART_HandleTypeDef *UartHandle) {
+  /* Set transmission flag: transfer complete */
+  UartReady = SET;
+}
+
+/**
+  * @brief  UART error callbacks
+  * @param  UartHandle: UART handle
+  * @note   This example shows a simple way to report transfer error, and you can
+  *         add your own implementation.
+  * @retval None
+  */
+void HAL_UART_ErrorCallback(UART_HandleTypeDef *UartHandle) {
+  Error_Handler();
 }
 /* USER CODE END 4 */
 
