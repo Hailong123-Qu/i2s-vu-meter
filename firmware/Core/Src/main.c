@@ -23,7 +23,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include <stdio.h>
+#include <stdlib.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -48,6 +49,9 @@ UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
 __IO ITStatus UartReady = RESET;
+uint16_t rxBuffer[8];
+int32_t lSample;
+int32_t rSample;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -57,13 +61,12 @@ static void MX_DMA_Init(void);
 static void MX_I2S1_Init(void);
 static void MX_USART2_UART_Init(void);
 /* USER CODE BEGIN PFP */
-
+void int2buf(char *buf, int32_t num, char *chn);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-uint16_t rxBuffer[8];
-uint8_t aTxBuffer[10] = "R1634L1235";
+
 /* USER CODE END 0 */
 
 /**
@@ -100,11 +103,6 @@ int main(void)
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
   HAL_I2S_Receive_DMA(&hi2s1, rxBuffer, 4);
-
-  char *msg = "Hello Nucleo Fun!\n\r";
-
-  HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
-
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -114,7 +112,15 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), 0xFFFF);
+    if (UartReady == SET) {
+      UartReady = RESET;
+      char buffer[12] = {"0"};
+
+      int2buf(buffer, lSample, "L");
+      HAL_UART_Transmit(&huart2, buffer, sizeof(buffer)/sizeof(*buffer), 0xFF);
+      int2buf(buffer, rSample, "R");
+      HAL_UART_Transmit(&huart2, buffer, sizeof(buffer)/sizeof(*buffer), 0xFF);
+    }
   }
   /* USER CODE END 3 */
 }
@@ -288,36 +294,39 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+inline void int2buf(char *buf, int32_t num, char *chn) {
+  // Set channel indicator
+  buf[0] = *chn;
+
+  // Set format according to value
+  char *fmt[6];
+  if (num < 0) {
+    *fmt = "-%010d";
+  } else {
+    *fmt = "0%010d";
+  }
+
+  sprintf(buf+1, *fmt, labs(num));
+}
+
 void HAL_I2S_RxHalfCpltCallback (I2S_HandleTypeDef *hi2s) {
-  volatile int32_t lSample = (int32_t) (rxBuffer[0] << 16) | rxBuffer[1];
-  volatile int32_t rSample = (int32_t) (rxBuffer[2] << 16) | rxBuffer[3];
+  UartReady = RESET;
+  lSample = (int32_t) (rxBuffer[0] << 16) | rxBuffer[1];
+  rSample = (int32_t) (rxBuffer[2] << 16) | rxBuffer[3];
   if (lSample != 0 || rSample != 0) {
     GPIOA->ODR |= 0x0020;
   }
-}
-
-void HAL_I2S_RxCpltCallback(I2S_HandleTypeDef *hi2s) {
-  volatile int32_t lSample = (int32_t) (rxBuffer[0] << 16) | rxBuffer[1];
-  volatile int32_t rSample = (int32_t) (rxBuffer[2] << 16) | rxBuffer[3];
-  if (lSample != 0 || rSample != 0) {
-    GPIOA->ODR &= ~0x0020;
-  }
-}
-
-void HAL_UART_TxCpltCallback(UART_HandleTypeDef *UartHandle) {
-  /* Set transmission flag: transfer complete */
   UartReady = SET;
 }
 
-/**
-  * @brief  UART error callbacks
-  * @param  UartHandle: UART handle
-  * @note   This example shows a simple way to report transfer error, and you can
-  *         add your own implementation.
-  * @retval None
-  */
-void HAL_UART_ErrorCallback(UART_HandleTypeDef *UartHandle) {
-  Error_Handler();
+void HAL_I2S_RxCpltCallback(I2S_HandleTypeDef *hi2s) {
+  UartReady = RESET;
+  lSample = (int32_t) (rxBuffer[0] << 16) | rxBuffer[1];
+  rSample = (int32_t) (rxBuffer[2] << 16) | rxBuffer[3];
+  if (lSample != 0 || rSample != 0) {
+    GPIOA->ODR &= ~0x0020;
+  }
+  UartReady = SET;
 }
 /* USER CODE END 4 */
 
