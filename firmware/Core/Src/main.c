@@ -25,6 +25,7 @@
 /* USER CODE BEGIN Includes */
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -34,6 +35,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
+#define SAMPLE_WINDOW 8800  // 200 ms
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -48,10 +50,13 @@ DMA_HandleTypeDef hdma_spi1_rx;
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
-__IO ITStatus UartReady = RESET;
+__IO ITStatus i2sReady = SET;
 uint16_t rxBuffer[8];
-int32_t lSample;
-int32_t rSample;
+int64_t lSampleBuf[4];
+int64_t rSampleBuf[4];
+uint16_t sampleCounter = 0;
+//int32_t lRmsBuf[4];
+//int32_t lRmsBuf[4];
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -61,7 +66,7 @@ static void MX_DMA_Init(void);
 static void MX_I2S1_Init(void);
 static void MX_USART2_UART_Init(void);
 /* USER CODE BEGIN PFP */
-void int2buf(char *buf, int32_t num, char *chn);
+static void int2buf(char *buf, int32_t num, char *chn);
 /* USER CODE END PFP */
 
 /* Private user code ---------------------------------------------------------*/
@@ -112,14 +117,24 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    if (UartReady == SET) {
-      UartReady = RESET;
-      char buffer[12] = {"0"};
+    if (sampleCounter == SAMPLE_WINDOW) {
+      i2sReady = RESET;
 
-      int2buf(buffer, lSample, "L");
+/*      uint32_t lRms = sqrt(lSampleAcc / SAMPLE_WINDOW);
+      uint32_t rRms = sqrt(rSampleAcc / SAMPLE_WINDOW);
+
+      lSampleAcc = 0;
+      rSampleAcc = 0;
+      sampleCounter = 0;
+
+      i2sReady = SET;
+
+      int8_t buffer[12] = {"0"};
+
+      int2buf(buffer, lRms, "L");
       HAL_UART_Transmit(&huart2, buffer, sizeof(buffer)/sizeof(*buffer), 0xFF);
-      int2buf(buffer, rSample, "R");
-      HAL_UART_Transmit(&huart2, buffer, sizeof(buffer)/sizeof(*buffer), 0xFF);
+      int2buf(buffer, rRms, "R");
+      HAL_UART_Transmit(&huart2, buffer, sizeof(buffer)/sizeof(*buffer), 0xFF);*/
     }
   }
   /* USER CODE END 3 */
@@ -294,7 +309,7 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-inline void int2buf(char *buf, int32_t num, char *chn) {
+static inline void int2buf(char *buf, int32_t num, char *chn) {
   // Set channel indicator
   buf[0] = *chn;
 
@@ -310,23 +325,35 @@ inline void int2buf(char *buf, int32_t num, char *chn) {
 }
 
 void HAL_I2S_RxHalfCpltCallback (I2S_HandleTypeDef *hi2s) {
-  UartReady = RESET;
-  lSample = (int32_t) (rxBuffer[0] << 16) | rxBuffer[1];
-  rSample = (int32_t) (rxBuffer[2] << 16) | rxBuffer[3];
+  if (i2sReady == RESET) { return; }
+
+  if (sampleCounter == 4) { sampleCounter = 0; }
+
+  int32_t lSample = (int32_t) (rxBuffer[0] << 16) | rxBuffer[1];
+  int32_t rSample = (int32_t) (rxBuffer[2] << 16) | rxBuffer[3];
+  lSampleBuf[sampleCounter] = lSample * lSample;
+  rSampleBuf[sampleCounter] = rSample * rSample;
+  sampleCounter++;
+
   if (lSample != 0 || rSample != 0) {
     GPIOA->ODR |= 0x0020;
   }
-  UartReady = SET;
 }
 
 void HAL_I2S_RxCpltCallback(I2S_HandleTypeDef *hi2s) {
-  UartReady = RESET;
-  lSample = (int32_t) (rxBuffer[0] << 16) | rxBuffer[1];
-  rSample = (int32_t) (rxBuffer[2] << 16) | rxBuffer[3];
+  if (i2sReady == RESET) { return; }
+
+  if (sampleCounter == 4) { sampleCounter = 0; }
+
+  int32_t lSample = (int32_t) (rxBuffer[0] << 16) | rxBuffer[1];
+  int32_t rSample = (int32_t) (rxBuffer[2] << 16) | rxBuffer[3];
+  lSampleBuf[sampleCounter] = lSample * lSample;
+  rSampleBuf[sampleCounter] = rSample * rSample;
+  sampleCounter++;
+
   if (lSample != 0 || rSample != 0) {
     GPIOA->ODR &= ~0x0020;
   }
-  UartReady = SET;
 }
 /* USER CODE END 4 */
 
