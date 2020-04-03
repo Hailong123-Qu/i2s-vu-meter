@@ -54,10 +54,9 @@ DMA_HandleTypeDef hdma_spi1_rx;
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
-__IO ITStatus i2sReady = SET;
 uint16_t rxBuffer[8];
-q31_t lSampleBuf[SAMPLE_WINDOW];
-q31_t rSampleBuf[SAMPLE_WINDOW];
+float32_t lSampleBuf[SAMPLE_WINDOW];
+float32_t rSampleBuf[SAMPLE_WINDOW];
 uint16_t sampleCounter = 0;
 /* USER CODE END PV */
 
@@ -123,21 +122,21 @@ int main(void)
 //  			char buffer[12] = {"0"};
 //  			float2buf(buffer, e, "L");
 //  			HAL_UART_Transmit(&huart2, buffer, sizeof(buffer)/sizeof(*buffer) - 1, 0xFF);
-  		float lFBuf[SAMPLE_WINDOW];
-  		float rFBuf[SAMPLE_WINDOW];
-			arm_q31_to_float(lSampleBuf, lFBuf, SAMPLE_WINDOW);
+//  		float lFBuf[SAMPLE_WINDOW];
+//  		float rFBuf[SAMPLE_WINDOW];
+//			arm_q31_to_float(lSampleBuf, lFBuf, SAMPLE_WINDOW);
 			//arm_q31_to_float(rSampleBuf, rFBuf, SAMPLE_WINDOW);
-			float lRms;
-			//float rRms;
-			arm_rms_f32(lFBuf, SAMPLE_WINDOW, &lRms);
-			//arm_rms_f32(lFBuf, SAMPLE_WINDOW, &lRms);
+			float32_t lRms;
+			float32_t rRms;
+			arm_rms_f32(lSampleBuf, SAMPLE_WINDOW, &lRms);
+			arm_rms_f32(rSampleBuf, SAMPLE_WINDOW, &rRms);
 			sampleCounter = 0;
-			// arm_q31_to_float (const q31_t *pSrc, float32_t *pDst, uint32_t blockSize)
-      char buffer[12] = {"0"};
+			// Send data via UART2
+			char buffer[12] = {"0"};
       float2buf(buffer, lRms, "L");
       HAL_UART_Transmit(&huart2, buffer, sizeof(buffer)/sizeof(*buffer) - 1, 0xFF);
-//      float2buf(buffer, rRmsF, "R");
-//      HAL_UART_Transmit(&huart2, buffer, sizeof(buffer)/sizeof(*buffer) - 1, 0xFF);
+      float2buf(buffer, rRms, "R");
+      HAL_UART_Transmit(&huart2, buffer, sizeof(buffer)/sizeof(*buffer) - 1, 0xFF);
   	}
     /* USER CODE END WHILE */
 
@@ -344,8 +343,14 @@ void HAL_I2S_RxHalfCpltCallback (I2S_HandleTypeDef *hi2s) {
 
   lSample.i = (int32_t) abs((rxBuffer[0] << 16) | rxBuffer[1]);
   rSample.i = (int32_t) abs((rxBuffer[2] << 16) | rxBuffer[3]);
-  lSampleBuf[sampleCounter] = lSample.q;
-  rSampleBuf[sampleCounter] = rSample.q;
+
+  float32_t lSampleF;
+  float32_t rSampleF;
+  arm_q31_to_float(&lSample.q, &lSampleF, 1);
+  arm_q31_to_float(&rSample.q, &rSampleF, 1);
+
+  lSampleBuf[sampleCounter] = lSampleF;
+  rSampleBuf[sampleCounter] = rSampleF;
   sampleCounter++;
 
   if (lSample.i != 0 || rSample.i != 0) {
@@ -361,8 +366,14 @@ void HAL_I2S_RxCpltCallback(I2S_HandleTypeDef *hi2s) {
 
   lSample.i = (int32_t) abs((rxBuffer[0] << 16) | rxBuffer[1]);
   rSample.i = (int32_t) abs((rxBuffer[2] << 16) | rxBuffer[3]);
-  lSampleBuf[sampleCounter] = lSample.q;
-  rSampleBuf[sampleCounter] = rSample.q;
+
+  float32_t lSampleF;
+  float32_t rSampleF;
+  arm_q31_to_float(&lSample.q, &lSampleF, 1);
+  arm_q31_to_float(&rSample.q, &rSampleF, 1);
+
+  lSampleBuf[sampleCounter] = lSampleF;
+  rSampleBuf[sampleCounter] = rSampleF;
   sampleCounter++;
 
   if (lSample.i != 0 || rSample.i != 0) {
