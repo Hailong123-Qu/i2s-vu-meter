@@ -117,23 +117,29 @@ int main(void)
   while (1)
   {
   	if (sampleCounter == SAMPLE_WINDOW) {
-			q31_t lRms;
-			q31_t rRms;
-			arm_rms_q31(lSampleBuf, SAMPLE_WINDOW, &lRms);
-			arm_rms_q31(rSampleBuf, SAMPLE_WINDOW, &rRms);
+//  			float32_t a[] = {0.3962, 0.4397, 0.3164, 0.2097, 0.8512, 0.2042, 0.4470, 0.8055, 0.8835, 0.773, 0.4341, 0.1206, 0.7533, 0.9478, 0.2790, 0.2339, 0.995, 0.9994, 0.6407, 0.3317, 0.3032, 0.2137, 0.5389, 0.6209, 0.6090, 0.9075, 0.3504, 0.7641, 0.2121, 0.4372, 0.8589, 0.4985, 0.5113, 0.373, 0.568, 0.7245, 0.1036, 0.6595, 0.340, 0.2594, 0.9380, 0.1393, 0.4319, 0.7338, 0.6393, 0.7850, 0.8846, 0.9670, 0.6537, 0.1028, 0.1618, 0.1748, 0.6172, 0.4288, 0.9433, 0.4758, 0.5151, 0.7948, 0.5516, 0.7346, 0.8945, 0.5484, 0.3629, 0.1376, 0.2748, 0.5068, 0.9387, 0.1021, 0.3054, 0.8747, 0.6056, 0.3818, 0.9751, 0.9874, 0.5564, 0.889, 0.3860, 0.9819, 0.4033, 0.1405, 0.2723, 0.5474, 0.490, 0.4316, 0.5342, 0.2334, 0.2784, 0.4896, 0.2391, 0.8915, 0.333, 0.9592, 0.9540, 0.7032, 0.9235, 0.9614, 0.6863, 0.3851, 0.7715, 0.649, 0.43, 0.879, 0.7755, 0.1074, 0.769, 0.7108, 0.1521, 0.4634, 0.2292, 0.7316, 0.5933, 0.9733, 0.2886, 0.1208, 0.9473, 0.5154, 0.6930, 0.4400, 0.480, 0.2882, 0.1108, 0.6043, 0.4658, 0.6354, 0.9774, 0.6677, 0.8630, 0.2561, 0.219, 0.3303, 0.4655, 0.4987, 0.1461, 0.2710, 0.7311, 0.7608, 0.8313, 0.3071, 0.7433, 0.5855, 0.1501, 0.9512, 0.3181, 0.8419, 0.7127, 0.3034, 0.1872, 0.6713, 0.9431, 0.8355, 0.8857, 0.430, 0.9870, 0.4365, 0.8105, 0.1551, 0.3620, 0.808, 0.360, 0.4379, 0.4053, 0.5787, 0.9649, 0.6697, 0.7757, 0.950, 0.7792, 0.1009, 0.484, 0.2552, 0.9871, 0.4976, 0.1743, 0.2046, 0.5981, 0.1209, 0.8731, 0.8064, 0.9237, 0.4767, 0.5270, 0.8726, 0.1182, 0.2843, 0.2633, 0.9113, 0.9630, 0.4490, 0.5694, 0.7396, 0.4898, 0.6008, 0.6250, 0.9714, 0.2825, 0.6307, 0.9284, 0.95, 0.5314, 0.3202, 0.8441, 0.5262, 0.2521, 0.6190, 0.9252, 0.7021, 0.7620, 0.8372, 0.5743, 0.6619, 0.2877, 0.8347, 0.9853, 0.8090, 0.7960, 0.3091, 0.5334, 0.1915, 0.1204, 0.2529, 0.2613, 0.9588, 0.3249, 0.5860, 0.1463, 0.2984, 0.4096, 0.5992, 0.634, 0.5021, 0.535, 0.8310, 0.9755, 0.5205, 0.7454, 0.2196, 0.9553, 0.7730, 0.6519, 0.9952, 0.1489, 0.5862, 0.711, 0.6251, 0.3146, 0.3409, 0.8432, 0.9543, 0.6768, 0.6460};
+//  			float32_t e;
+//  			arm_rms_f32(a, sizeof(a)/sizeof(*a), &e);
+//  			char buffer[12] = {"0"};
+//  			float2buf(buffer, e, "L");
+//  			HAL_UART_Transmit(&huart2, buffer, sizeof(buffer)/sizeof(*buffer) - 1, 0xFF);
+  		float lFBuf[SAMPLE_WINDOW];
+  		float rFBuf[SAMPLE_WINDOW];
+			arm_q31_to_float(lSampleBuf, lFBuf, SAMPLE_WINDOW);
+			//arm_q31_to_float(rSampleBuf, rFBuf, SAMPLE_WINDOW);
+			float lRms;
+			//float rRms;
+			arm_rms_f32(lFBuf, SAMPLE_WINDOW, &lRms);
+			//arm_rms_f32(lFBuf, SAMPLE_WINDOW, &lRms);
 			sampleCounter = 0;
 			// arm_q31_to_float (const q31_t *pSrc, float32_t *pDst, uint32_t blockSize)
-			float lRmsF;
-			float rRmsF;
-			arm_q31_to_float(&lRms, &lRmsF, 1);
-			arm_q31_to_float(&rRms, &rRmsF, 1);
       char buffer[12] = {"0"};
-      float2buf(buffer, lRmsF, "L");
+      float2buf(buffer, lRms, "L");
       HAL_UART_Transmit(&huart2, buffer, sizeof(buffer)/sizeof(*buffer) - 1, 0xFF);
-      float2buf(buffer, rRmsF, "R");
-      HAL_UART_Transmit(&huart2, buffer, sizeof(buffer)/sizeof(*buffer) - 1, 0xFF);
+//      float2buf(buffer, rRmsF, "R");
+//      HAL_UART_Transmit(&huart2, buffer, sizeof(buffer)/sizeof(*buffer) - 1, 0xFF);
   	}
-  	/* USER CODE END WHILE */
+    /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
   }
@@ -204,7 +210,7 @@ static void MX_I2S1_Init(void)
   /* USER CODE END I2S1_Init 1 */
   hi2s1.Instance = SPI1;
   hi2s1.Init.Mode = I2S_MODE_SLAVE_RX;
-  hi2s1.Init.Standard = I2S_STANDARD_MSB;
+  hi2s1.Init.Standard = I2S_STANDARD_PHILIPS;
   hi2s1.Init.DataFormat = I2S_DATAFORMAT_32B;
   hi2s1.Init.MCLKOutput = I2S_MCLKOUTPUT_DISABLE;
   hi2s1.Init.AudioFreq = I2S_AUDIOFREQ_44K;
