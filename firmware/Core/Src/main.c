@@ -41,7 +41,7 @@ typedef union {
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
 #define SAMPLE_RATE 			44  	// kHz
-#define WINDOW_DURATION		50		// ms
+#define WINDOW_DURATION		1			// ms
 #define SAMPLE_WINDOW 		(SAMPLE_RATE * WINDOW_DURATION)
 /* USER CODE END PD */
 
@@ -54,6 +54,8 @@ typedef union {
 I2S_HandleTypeDef hi2s1;
 DMA_HandleTypeDef hdma_spi1_rx;
 
+TIM_HandleTypeDef htim14;
+
 UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
@@ -61,6 +63,7 @@ uint16_t rxBuffer[8];
 float32_t lSampleBuf[SAMPLE_WINDOW];
 float32_t rSampleBuf[SAMPLE_WINDOW];
 uint16_t sampleCounter = 0;
+volatile bool output = false;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -69,9 +72,11 @@ static void MX_GPIO_Init(void);
 static void MX_DMA_Init(void);
 static void MX_I2S1_Init(void);
 static void MX_USART2_UART_Init(void);
+static void MX_TIM14_Init(void);
 /* USER CODE BEGIN PFP */
 static void float2buf(uint8_t *buf, float num, char *chn);
 static bool storeSample();
+static void startupLeds();
 static void setLeds(uint32_t rmsValue);
 /* USER CODE END PFP */
 
@@ -111,18 +116,12 @@ int main(void)
   MX_DMA_Init();
   MX_I2S1_Init();
   MX_USART2_UART_Init();
+  MX_TIM14_Init();
   /* USER CODE BEGIN 2 */
+  startupLeds();
+
   HAL_I2S_Receive_DMA(&hi2s1, rxBuffer, 4);
-
-  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5|p3Pin_Pin|p2Pin_Pin|n2Pin_Pin|n1Pin_Pin|n10Pin_Pin, GPIO_PIN_SET);
-  HAL_GPIO_WritePin(GPIOC, n20Pin_Pin|pn0Pin_Pin, GPIO_PIN_SET);
-  HAL_GPIO_WritePin(GPIOB, p1Pin_Pin|n3Pin_Pin|n7Pin_Pin|n5Pin_Pin, GPIO_PIN_SET);
-
-  HAL_Delay(1000);
-
-  HAL_GPIO_WritePin(GPIOA, GPIO_PIN_5|p3Pin_Pin|p2Pin_Pin|n2Pin_Pin|n1Pin_Pin|n10Pin_Pin, GPIO_PIN_RESET);
-  HAL_GPIO_WritePin(GPIOC, n20Pin_Pin|pn0Pin_Pin, GPIO_PIN_RESET);
-  HAL_GPIO_WritePin(GPIOB, p1Pin_Pin|n3Pin_Pin|n7Pin_Pin|n5Pin_Pin, GPIO_PIN_RESET);
+  HAL_TIM_Base_Start_IT(&htim14);
   /* USER CODE END 2 */
 
   /* Infinite loop */
@@ -135,18 +134,18 @@ int main(void)
 			float32_t rRmsF;
 			arm_rms_f32(lSampleBuf, SAMPLE_WINDOW, &lRmsF);
 			arm_rms_f32(rSampleBuf, SAMPLE_WINDOW, &rRmsF);
-
 			sampleCounter = 0;	// Release sample buffer lock
 
-			// 0.33244130
+			if (output) {
+				uint32_t lRms = (uint32_t) (lRmsF * 1E8);
+				uint32_t rRms = (uint32_t) (lRmsF * 1E8);
 
-			uint32_t lRms = (uint32_t) (lRmsF * 1E8);
-			uint32_t rRms = (uint32_t) (lRmsF * 1E8);
-
-			setLeds(lRms);
+				setLeds(lRms);
+				output = false;
+			}
 
 			// Send data via UART2
-			uint8_t buffer[12] = {"0"};
+			uint8_t buffer[13] = {"0"};
       float2buf(buffer, lRmsF, "L");
       HAL_UART_Transmit(&huart2, buffer, sizeof(buffer)/sizeof(*buffer) - 1, 0xFF);
       float2buf(buffer, rRmsF, "R");
@@ -224,7 +223,7 @@ static void MX_I2S1_Init(void)
   hi2s1.Instance = SPI1;
   hi2s1.Init.Mode = I2S_MODE_SLAVE_RX;
   hi2s1.Init.Standard = I2S_STANDARD_PHILIPS;
-  hi2s1.Init.DataFormat = I2S_DATAFORMAT_32B;
+  hi2s1.Init.DataFormat = I2S_DATAFORMAT_24B;
   hi2s1.Init.MCLKOutput = I2S_MCLKOUTPUT_DISABLE;
   hi2s1.Init.AudioFreq = I2S_AUDIOFREQ_44K;
   hi2s1.Init.CPOL = I2S_CPOL_LOW;
@@ -235,6 +234,37 @@ static void MX_I2S1_Init(void)
   /* USER CODE BEGIN I2S1_Init 2 */
 
   /* USER CODE END I2S1_Init 2 */
+
+}
+
+/**
+  * @brief TIM14 Initialization Function
+  * @param None
+  * @retval None
+  */
+static void MX_TIM14_Init(void)
+{
+
+  /* USER CODE BEGIN TIM14_Init 0 */
+
+  /* USER CODE END TIM14_Init 0 */
+
+  /* USER CODE BEGIN TIM14_Init 1 */
+
+  /* USER CODE END TIM14_Init 1 */
+  htim14.Instance = TIM14;
+  htim14.Init.Prescaler = 16000;
+  htim14.Init.CounterMode = TIM_COUNTERMODE_UP;
+  htim14.Init.Period = 49;
+  htim14.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
+  htim14.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_DISABLE;
+  if (HAL_TIM_Base_Init(&htim14) != HAL_OK)
+  {
+    Error_Handler();
+  }
+  /* USER CODE BEGIN TIM14_Init 2 */
+
+  /* USER CODE END TIM14_Init 2 */
 
 }
 
@@ -355,7 +385,7 @@ static void MX_GPIO_Init(void)
 static inline void float2buf(uint8_t *buf, float num, char *chn) {
   // Set channel indicator
   buf[0] = *chn;
-  sprintf(buf+1, "%.8f", fabs(num));
+  sprintf(buf+1, "%.9f", fabs(num));
 }
 
 static bool storeSample() {
@@ -381,73 +411,102 @@ static bool storeSample() {
   }
 }
 
+static void startupLeds() {
+  HAL_GPIO_WritePin(GPIOC, n20Pin_Pin, GPIO_PIN_SET);
+	HAL_Delay(500);
+  HAL_GPIO_WritePin(GPIOA, n10Pin_Pin, GPIO_PIN_SET);
+  HAL_Delay(500);
+  HAL_GPIO_WritePin(GPIOB, n7Pin_Pin, GPIO_PIN_SET);
+	HAL_Delay(500);
+  HAL_GPIO_WritePin(GPIOB, n5Pin_Pin, GPIO_PIN_SET);
+	HAL_Delay(500);
+  HAL_GPIO_WritePin(GPIOB, n3Pin_Pin, GPIO_PIN_SET);
+	HAL_Delay(500);
+  HAL_GPIO_WritePin(GPIOA, n2Pin_Pin, GPIO_PIN_SET);
+	HAL_Delay(500);
+  HAL_GPIO_WritePin(GPIOA, n1Pin_Pin, GPIO_PIN_SET);
+	HAL_Delay(500);
+  HAL_GPIO_WritePin(GPIOC, pn0Pin_Pin, GPIO_PIN_SET);
+	HAL_Delay(500);
+  HAL_GPIO_WritePin(GPIOB, p1Pin_Pin, GPIO_PIN_SET);
+	HAL_Delay(500);
+  HAL_GPIO_WritePin(GPIOA, p2Pin_Pin, GPIO_PIN_SET);
+	HAL_Delay(500);
+  HAL_GPIO_WritePin(GPIOA, p3Pin_Pin, GPIO_PIN_SET);
+	HAL_Delay(500);
+  HAL_GPIO_WritePin(GPIOA, p3Pin_Pin|p2Pin_Pin|n2Pin_Pin|n1Pin_Pin|n10Pin_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOC, n20Pin_Pin|pn0Pin_Pin, GPIO_PIN_RESET);
+  HAL_GPIO_WritePin(GPIOB, p1Pin_Pin|n3Pin_Pin|n7Pin_Pin|n5Pin_Pin, GPIO_PIN_RESET);
+}
+
 static void setLeds(uint32_t rmsValue) {
   HAL_GPIO_WritePin(GPIOA, p3Pin_Pin|p2Pin_Pin|n2Pin_Pin|n1Pin_Pin|n10Pin_Pin, GPIO_PIN_RESET);
   HAL_GPIO_WritePin(GPIOC, n20Pin_Pin|pn0Pin_Pin, GPIO_PIN_RESET);
   HAL_GPIO_WritePin(GPIOB, p1Pin_Pin|n3Pin_Pin|n7Pin_Pin|n5Pin_Pin, GPIO_PIN_RESET);
-
-  if (rmsValue > 30253 && rmsValue < 60794) {
-    HAL_GPIO_WritePin(GPIOC, n20Pin_Pin, GPIO_PIN_SET);
-  } else if (rmsValue >= 60794 && rmsValue < 132061) {
-    HAL_GPIO_WritePin(GPIOA, n10Pin_Pin, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(GPIOC, n20Pin_Pin, GPIO_PIN_SET);
-  } else if (rmsValue >= 132061 && rmsValue < 264829) {
-    HAL_GPIO_WritePin(GPIOA, n10Pin_Pin, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(GPIOC, n20Pin_Pin|pn0Pin_Pin, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(GPIOB, n7Pin_Pin, GPIO_PIN_SET);
-  } else if (rmsValue >= 264829 && rmsValue < 439503) {
-    HAL_GPIO_WritePin(GPIOA, n10Pin_Pin, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(GPIOC, n20Pin_Pin, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(GPIOB, n7Pin_Pin|n5Pin_Pin, GPIO_PIN_SET);
-  } else if (rmsValue >= 439503 && rmsValue < 1048978) {
-    HAL_GPIO_WritePin(GPIOA, n10Pin_Pin, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(GPIOC, n20Pin_Pin, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(GPIOB, n3Pin_Pin|n7Pin_Pin|n5Pin_Pin, GPIO_PIN_SET);
-  } else if (rmsValue >= 1048978 && rmsValue < 1742188) {
-    HAL_GPIO_WritePin(GPIOA, n2Pin_Pin|n10Pin_Pin, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(GPIOC, n20Pin_Pin, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(GPIOB, n3Pin_Pin|n7Pin_Pin|n5Pin_Pin, GPIO_PIN_SET);
-  } else if (rmsValue >= 1742188 && rmsValue < 3792372) {
-    HAL_GPIO_WritePin(GPIOA, n2Pin_Pin|n1Pin_Pin|n10Pin_Pin, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(GPIOC, n20Pin_Pin, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(GPIOB, n3Pin_Pin|n7Pin_Pin|n5Pin_Pin, GPIO_PIN_SET);
-  } else if (rmsValue >= 3792372 && rmsValue < 8292617) {
-    HAL_GPIO_WritePin(GPIOA, n2Pin_Pin|n1Pin_Pin|n10Pin_Pin, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(GPIOC, n20Pin_Pin|pn0Pin_Pin, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(GPIOB, n3Pin_Pin|n7Pin_Pin|n5Pin_Pin, GPIO_PIN_SET);
-  } else if (rmsValue >= 8292617 && rmsValue < 16105936) {
-    HAL_GPIO_WritePin(GPIOA, n2Pin_Pin|n1Pin_Pin|n10Pin_Pin, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(GPIOC, n20Pin_Pin|pn0Pin_Pin, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(GPIOB, p1Pin_Pin|n3Pin_Pin|n7Pin_Pin|n5Pin_Pin, GPIO_PIN_SET);
-  } else if (rmsValue >= 16105936 && rmsValue < 33961411) {
-    HAL_GPIO_WritePin(GPIOA, p2Pin_Pin|n2Pin_Pin|n1Pin_Pin|n10Pin_Pin, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(GPIOC, n20Pin_Pin|pn0Pin_Pin, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(GPIOB, p1Pin_Pin|n3Pin_Pin|n7Pin_Pin|n5Pin_Pin, GPIO_PIN_SET);
-  } else if (rmsValue >= 33961411) {
-    HAL_GPIO_WritePin(GPIOA, p3Pin_Pin|p2Pin_Pin|n2Pin_Pin|n1Pin_Pin|n10Pin_Pin, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(GPIOC, n20Pin_Pin|pn0Pin_Pin, GPIO_PIN_SET);
-    HAL_GPIO_WritePin(GPIOB, p1Pin_Pin|n3Pin_Pin|n7Pin_Pin|n5Pin_Pin, GPIO_PIN_SET);
+  // Values: 84762573	80666449	76068407	70737635	63152057	55983666	49568172	40023266	30826475	21597468	1686666
+  if (rmsValue >= 84762573) {
+      HAL_GPIO_WritePin(GPIOA, p3Pin_Pin|p2Pin_Pin|n2Pin_Pin|n1Pin_Pin|n10Pin_Pin, GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOC, n20Pin_Pin|pn0Pin_Pin, GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB, p1Pin_Pin|n3Pin_Pin|n7Pin_Pin|n5Pin_Pin, GPIO_PIN_SET);
+  } else if (rmsValue >= 80666449) {
+      HAL_GPIO_WritePin(GPIOA, p2Pin_Pin|n2Pin_Pin|n1Pin_Pin|n10Pin_Pin, GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOC, n20Pin_Pin|pn0Pin_Pin, GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB, p1Pin_Pin|n3Pin_Pin|n7Pin_Pin|n5Pin_Pin, GPIO_PIN_SET);
+  } else if (rmsValue >= 76068407) {
+      HAL_GPIO_WritePin(GPIOA, n2Pin_Pin|n1Pin_Pin|n10Pin_Pin, GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOC, n20Pin_Pin|pn0Pin_Pin, GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB, p1Pin_Pin|n3Pin_Pin|n7Pin_Pin|n5Pin_Pin, GPIO_PIN_SET);
+  } else if (rmsValue >= 70737635) {
+      HAL_GPIO_WritePin(GPIOA, n2Pin_Pin|n1Pin_Pin|n10Pin_Pin, GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOC, n20Pin_Pin|pn0Pin_Pin, GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB, n3Pin_Pin|n7Pin_Pin|n5Pin_Pin, GPIO_PIN_SET);
+  } else if (rmsValue >= 63152057) {
+      HAL_GPIO_WritePin(GPIOA, n2Pin_Pin|n1Pin_Pin|n10Pin_Pin, GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOC, n20Pin_Pin, GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB, n3Pin_Pin|n7Pin_Pin|n5Pin_Pin, GPIO_PIN_SET);
+  } else if (rmsValue >= 55983666) {
+      HAL_GPIO_WritePin(GPIOA, n2Pin_Pin|n10Pin_Pin, GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOC, n20Pin_Pin, GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB, n3Pin_Pin|n7Pin_Pin|n5Pin_Pin, GPIO_PIN_SET);
+  } else if (rmsValue >= 49568172) {
+      HAL_GPIO_WritePin(GPIOA, n10Pin_Pin, GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOC, n20Pin_Pin, GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB, n3Pin_Pin|n7Pin_Pin|n5Pin_Pin, GPIO_PIN_SET);
+  } else if (rmsValue >= 40023266) {
+      HAL_GPIO_WritePin(GPIOA, n10Pin_Pin, GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOC, n20Pin_Pin, GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB, n7Pin_Pin|n5Pin_Pin, GPIO_PIN_SET);
+  } else if (rmsValue >= 30826475) {
+      HAL_GPIO_WritePin(GPIOA, n10Pin_Pin, GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOC, n20Pin_Pin, GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOB, n7Pin_Pin, GPIO_PIN_SET);
+  } else if (rmsValue >= 21597468) {
+      HAL_GPIO_WritePin(GPIOA, n10Pin_Pin, GPIO_PIN_SET);
+      HAL_GPIO_WritePin(GPIOC, n20Pin_Pin, GPIO_PIN_SET);
+  } else if (rmsValue >= 1686666) {
+      HAL_GPIO_WritePin(GPIOC, n20Pin_Pin, GPIO_PIN_SET);
+  } else {
+  	return;
   }
 }
 
 void HAL_I2S_RxHalfCpltCallback (I2S_HandleTypeDef *hi2s) {
   if (sampleCounter == SAMPLE_WINDOW) { return; }	// Fail safe
 
-  bool led = storeSample();
-
-  if (led) {
-    GPIOA->ODR |= GPIO_PIN_5;
-  }
+  storeSample();
 }
 
 void HAL_I2S_RxCpltCallback(I2S_HandleTypeDef *hi2s) {
   if (sampleCounter == SAMPLE_WINDOW) { return; }	// Fail safe
 
-  bool led = storeSample();
+  storeSample();
+}
 
-  if (led) {
-    GPIOA->ODR &= ~GPIO_PIN_5;
-  }
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+    if (htim->Instance==TIM14) {
+    	output = true;
+		}
 }
 /* USER CODE END 4 */
 
