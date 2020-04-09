@@ -53,19 +53,6 @@ F 3 "~" H 8650 3400 50  0001 C CNN
 	0    -1   -1   0   
 $EndComp
 $Comp
-L Transistor_FET:2N7002K Q?
-U 1 1 5E881478
-P 3150 2850
-AR Path="/5E881478" Ref="Q?"  Part="1" 
-AR Path="/5E7FE9D4/5E881478" Ref="Q3"  Part="1" 
-F 0 "Q3" H 3354 2896 50  0000 L CNN
-F 1 "2N7002K" H 3354 2805 50  0000 L CNN
-F 2 "Package_TO_SOT_SMD:SOT-23_Handsoldering" H 3350 2775 50  0001 L CIN
-F 3 "https://www.diodes.com/assets/Datasheets/ds30896.pdf" H 3150 2850 50  0001 L CNN
-	1    3150 2850
-	1    0    0    -1  
-$EndComp
-$Comp
 L Transistor_FET:IRLML0030 Q?
 U 1 1 5E88147E
 P 4550 4900
@@ -89,110 +76,6 @@ F 1 "IRLML0030" H 6554 4855 50  0000 L CNN
 F 2 "Package_TO_SOT_SMD:SOT-23_Handsoldering" H 6550 4825 50  0001 L CIN
 F 3 "https://www.infineon.com/dgdl/irlml0030pbf.pdf?fileId=5546d462533600a401535664773825df" H 6350 4900 50  0001 L CNN
 	1    6350 4900
-	1    0    0    -1  
-$EndComp
-$Comp
-L Transistor_FET:2N7002K Q?
-U 1 1 5E881492
-P 4050 2850
-AR Path="/5E881492" Ref="Q?"  Part="1" 
-AR Path="/5E7FE9D4/5E881492" Ref="Q4"  Part="1" 
-F 0 "Q4" H 4254 2896 50  0000 L CNN
-F 1 "2N7002K" H 4254 2805 50  0000 L CNN
-F 2 "Package_TO_SOT_SMD:SOT-23_Handsoldering" H 4250 2775 50  0001 L CIN
-F 3 "https://www.diodes.com/assets/Datasheets/ds30896.pdf" H 4050 2850 50  0001 L CNN
-	1    4050 2850
-	1    0    0    -1  
-$EndComp
-$Comp
-L Transistor_FET:2N7002K Q?
-U 1 1 5E881498
-P 10350 2850
-AR Path="/5E881498" Ref="Q?"  Part="1" 
-AR Path="/5E7FE9D4/5E881498" Ref="Q11"  Part="1" 
-F 0 "Q11" H 10554 2896 50  0000 L CNN
-F 1 "2N7002K" H 10554 2805 50  0000 L CNN
-F 2 "Package_TO_SOT_SMD:SOT-23_Handsoldering" H 10550 2775 50  0001 L CIN
-F 3 "https://www.diodes.com/assets/Datasheets/ds30896.pdf" H 10350 2850 50  0001 L CNN
-	1    10350 2850
-	1    0    0    -1  
-$EndComp
-$Comp
-L Transistor_FET:2N7002K Q?
-U 1 1 5E88149E
-P 6750 2850
-AR Path="/5E88149E" Ref="Q?"  Part="1" 
-AR Path="/5E7FE9D4/5E88149E" Ref="Q7"  Part="1" 
-F 0 "Q7" H 6954 2896 50  0000 L CNN
-F 1 "2N7002K" H 6954 2805 50  0000 L CNN
-F 2 "Package_TO_SOT_SMD:SOT-23_Handsoldering" H 6950 2775 50  0001 L CIN
-F 3 "https://www.diodes.com/assets/Datasheets/ds30896.pdf" H 6750 2850 50  0001 L CNN
-	1    6750 2850
-	1    0    0    -1  
-$EndComp
-$Comp
-L Transistor_FET:2N7002K Q?
-U 1 1 5E8814A4
-P 5850 2850
-AR Path="/5E8814A4" Ref="Q?"  Part="1" 
-AR Path="/5E7FE9D4/5E8814A4" Ref="Q6"  Part="1" 
-F 0 "Q6" H 6054 2896 50  0000 L CNN
-F 1 "2N7002K" H 6054 2805 50  0000 L CNN
-F 2 "Package_TO_SOT_SMD:SOT-23_Handsoldering" H 6050 2775 50  0001 L CIN
-F 3 "https://www.diodes.com/assets/Datasheets/ds30896.pdf" H 5850 2850 50  0001 L CNN
-	1    5850 2850
-	1    0    0    -1  
-$EndComp
-$Comp
-L Transistor_FET:2N7002K Q?
-U 1 1 5E8814AA
-P 9450 2850
-AR Path="/5E8814AA" Ref="Q?"  Part="1" 
-AR Path="/5E7FE9D4/5E8814AA" Ref="Q10"  Part="1" 
-F 0 "Q10" H 9654 2896 50  0000 L CNN
-F 1 "2N7002K" H 9654 2805 50  0000 L CNN
-F 2 "Package_TO_SOT_SMD:SOT-23_Handsoldering" H 9650 2775 50  0001 L CIN
-F 3 "https://www.diodes.com/assets/Datasheets/ds30896.pdf" H 9450 2850 50  0001 L CNN
-	1    9450 2850
-	1    0    0    -1  
-$EndComp
-$Comp
-L Transistor_FET:2N7002K Q?
-U 1 1 5E8814B0
-P 8550 2850
-AR Path="/5E8814B0" Ref="Q?"  Part="1" 
-AR Path="/5E7FE9D4/5E8814B0" Ref="Q9"  Part="1" 
-F 0 "Q9" H 8754 2896 50  0000 L CNN
-F 1 "2N7002K" H 8754 2805 50  0000 L CNN
-F 2 "Package_TO_SOT_SMD:SOT-23_Handsoldering" H 8750 2775 50  0001 L CIN
-F 3 "https://www.diodes.com/assets/Datasheets/ds30896.pdf" H 8550 2850 50  0001 L CNN
-	1    8550 2850
-	1    0    0    -1  
-$EndComp
-$Comp
-L Transistor_FET:2N7002K Q?
-U 1 1 5E8814B6
-P 7650 2850
-AR Path="/5E8814B6" Ref="Q?"  Part="1" 
-AR Path="/5E7FE9D4/5E8814B6" Ref="Q8"  Part="1" 
-F 0 "Q8" H 7854 2896 50  0000 L CNN
-F 1 "2N7002K" H 7854 2805 50  0000 L CNN
-F 2 "Package_TO_SOT_SMD:SOT-23_Handsoldering" H 7850 2775 50  0001 L CIN
-F 3 "https://www.diodes.com/assets/Datasheets/ds30896.pdf" H 7650 2850 50  0001 L CNN
-	1    7650 2850
-	1    0    0    -1  
-$EndComp
-$Comp
-L Transistor_FET:2N7002K Q?
-U 1 1 5E8814C2
-P 1350 2850
-AR Path="/5E8814C2" Ref="Q?"  Part="1" 
-AR Path="/5E7FE9D4/5E8814C2" Ref="Q1"  Part="1" 
-F 0 "Q1" H 1554 2896 50  0000 L CNN
-F 1 "2N7002K" H 1554 2805 50  0000 L CNN
-F 2 "Package_TO_SOT_SMD:SOT-23_Handsoldering" H 1550 2775 50  0001 L CIN
-F 3 "https://www.diodes.com/assets/Datasheets/ds30896.pdf" H 1350 2850 50  0001 L CNN
-	1    1350 2850
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -441,32 +324,6 @@ F 2 "LED_THT:LED_D5.0mm" H 7750 4100 50  0001 C CNN
 F 3 "~" H 7750 4100 50  0001 C CNN
 	1    7750 4100
 	0    -1   -1   0   
-$EndComp
-$Comp
-L Transistor_FET:2N7002K Q?
-U 1 1 5E900B38
-P 2250 2850
-AR Path="/5E900B38" Ref="Q?"  Part="1" 
-AR Path="/5E7FE9D4/5E900B38" Ref="Q2"  Part="1" 
-F 0 "Q2" H 2454 2896 50  0000 L CNN
-F 1 "2N7002K" H 2454 2805 50  0000 L CNN
-F 2 "Package_TO_SOT_SMD:SOT-23_Handsoldering" H 2450 2775 50  0001 L CIN
-F 3 "https://www.diodes.com/assets/Datasheets/ds30896.pdf" H 2250 2850 50  0001 L CNN
-	1    2250 2850
-	1    0    0    -1  
-$EndComp
-$Comp
-L Transistor_FET:2N7002K Q?
-U 1 1 5E88148C
-P 4950 2850
-AR Path="/5E88148C" Ref="Q?"  Part="1" 
-AR Path="/5E7FE9D4/5E88148C" Ref="Q5"  Part="1" 
-F 0 "Q5" H 5154 2896 50  0000 L CNN
-F 1 "2N7002K" H 5154 2805 50  0000 L CNN
-F 2 "Package_TO_SOT_SMD:SOT-23_Handsoldering" H 5150 2775 50  0001 L CIN
-F 3 "https://www.diodes.com/assets/Datasheets/ds30896.pdf" H 4950 2850 50  0001 L CNN
-	1    4950 2850
-	1    0    0    -1  
 $EndComp
 Wire Wire Line
 	1450 3050 1450 3150
@@ -752,63 +609,6 @@ Wire Wire Line
 	4650 5100 4650 5350
 Wire Wire Line
 	6450 5100 6450 5350
-Text HLabel 1050 1900 1    50   Input ~ 0
--20_dB
-Wire Wire Line
-	1150 2850 1050 2850
-Wire Wire Line
-	1050 2850 1050 2350
-Text HLabel 1950 1900 1    50   Input ~ 0
--10_dB
-Wire Wire Line
-	2050 2850 1950 2850
-Wire Wire Line
-	1950 2850 1950 2350
-Text HLabel 2850 1900 1    50   Input ~ 0
--7_dB
-Wire Wire Line
-	2950 2850 2850 2850
-Text HLabel 3750 1900 1    50   Input ~ 0
--5_dB
-Wire Wire Line
-	3850 2850 3750 2850
-Text HLabel 4650 1900 1    50   Input ~ 0
--3_dB
-Wire Wire Line
-	4750 2850 4650 2850
-Text HLabel 5550 1900 1    50   Input ~ 0
--2_dB
-Wire Wire Line
-	5650 2850 5550 2850
-Text HLabel 6450 1900 1    50   Input ~ 0
--1_dB
-Wire Wire Line
-	6550 2850 6450 2850
-Text HLabel 7350 1900 1    50   Input ~ 0
-0_dB
-Text HLabel 8250 1900 1    50   Input ~ 0
-+1_dB
-Wire Wire Line
-	8350 2850 8250 2850
-Text HLabel 9150 1900 1    50   Input ~ 0
-+2_dB
-Wire Wire Line
-	9250 2850 9150 2850
-Text HLabel 10050 1900 1    50   Input ~ 0
-+3_dB
-Wire Wire Line
-	10150 2850 10050 2850
-$Comp
-L power:+5V #PWR0114
-U 1 1 5EA3FDDB
-P 5950 1900
-F 0 "#PWR0114" H 5950 1750 50  0001 C CNN
-F 1 "+5V" H 5965 2073 50  0000 C CNN
-F 2 "" H 5950 1900 50  0001 C CNN
-F 3 "" H 5950 1900 50  0001 C CNN
-	1    5950 1900
-	1    0    0    -1  
-$EndComp
 Text HLabel 3850 4900 0    50   Input ~ 0
 LEFT
 Text HLabel 5600 4900 0    50   Input ~ 0
@@ -817,131 +617,6 @@ Wire Wire Line
 	6150 4900 6050 4900
 Wire Wire Line
 	4350 4900 4250 4900
-$Comp
-L Device:R R2
-U 1 1 5EB342FC
-P 1950 2200
-F 0 "R2" H 2020 2246 50  0000 L CNN
-F 1 "100" H 2020 2155 50  0000 L CNN
-F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 1880 2200 50  0001 C CNN
-F 3 "~" H 1950 2200 50  0001 C CNN
-	1    1950 2200
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	1950 1900 1950 2050
-$Comp
-L Device:R R1
-U 1 1 5EB4B215
-P 1050 2200
-F 0 "R1" H 1120 2246 50  0000 L CNN
-F 1 "100" H 1120 2155 50  0000 L CNN
-F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 980 2200 50  0001 C CNN
-F 3 "~" H 1050 2200 50  0001 C CNN
-	1    1050 2200
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	1050 1900 1050 2050
-$Comp
-L Device:R R3
-U 1 1 5EB783DB
-P 2850 2200
-F 0 "R3" H 2920 2246 50  0000 L CNN
-F 1 "100" H 2920 2155 50  0000 L CNN
-F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 2780 2200 50  0001 C CNN
-F 3 "~" H 2850 2200 50  0001 C CNN
-	1    2850 2200
-	1    0    0    -1  
-$EndComp
-$Comp
-L Device:R R4
-U 1 1 5EB79090
-P 3750 2200
-F 0 "R4" H 3820 2246 50  0000 L CNN
-F 1 "100" H 3820 2155 50  0000 L CNN
-F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 3680 2200 50  0001 C CNN
-F 3 "~" H 3750 2200 50  0001 C CNN
-	1    3750 2200
-	1    0    0    -1  
-$EndComp
-$Comp
-L Device:R R5
-U 1 1 5EB79A13
-P 4650 2200
-F 0 "R5" H 4720 2246 50  0000 L CNN
-F 1 "100" H 4720 2155 50  0000 L CNN
-F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 4580 2200 50  0001 C CNN
-F 3 "~" H 4650 2200 50  0001 C CNN
-	1    4650 2200
-	1    0    0    -1  
-$EndComp
-$Comp
-L Device:R R6
-U 1 1 5EB7A332
-P 5550 2200
-F 0 "R6" H 5620 2246 50  0000 L CNN
-F 1 "100" H 5620 2155 50  0000 L CNN
-F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 5480 2200 50  0001 C CNN
-F 3 "~" H 5550 2200 50  0001 C CNN
-	1    5550 2200
-	1    0    0    -1  
-$EndComp
-$Comp
-L Device:R R7
-U 1 1 5EB7AB94
-P 6450 2200
-F 0 "R7" H 6520 2246 50  0000 L CNN
-F 1 "100" H 6520 2155 50  0000 L CNN
-F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 6380 2200 50  0001 C CNN
-F 3 "~" H 6450 2200 50  0001 C CNN
-	1    6450 2200
-	1    0    0    -1  
-$EndComp
-$Comp
-L Device:R R8
-U 1 1 5EB7B308
-P 7350 2200
-F 0 "R8" H 7420 2246 50  0000 L CNN
-F 1 "100" H 7420 2155 50  0000 L CNN
-F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 7280 2200 50  0001 C CNN
-F 3 "~" H 7350 2200 50  0001 C CNN
-	1    7350 2200
-	1    0    0    -1  
-$EndComp
-$Comp
-L Device:R R9
-U 1 1 5EB7BA0D
-P 8250 2200
-F 0 "R9" H 8320 2246 50  0000 L CNN
-F 1 "100" H 8320 2155 50  0000 L CNN
-F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 8180 2200 50  0001 C CNN
-F 3 "~" H 8250 2200 50  0001 C CNN
-	1    8250 2200
-	1    0    0    -1  
-$EndComp
-$Comp
-L Device:R R10
-U 1 1 5EB7C1EC
-P 9150 2200
-F 0 "R10" H 9220 2246 50  0000 L CNN
-F 1 "100" H 9220 2155 50  0000 L CNN
-F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 9080 2200 50  0001 C CNN
-F 3 "~" H 9150 2200 50  0001 C CNN
-	1    9150 2200
-	1    0    0    -1  
-$EndComp
-$Comp
-L Device:R R11
-U 1 1 5EB7CB01
-P 10050 2200
-F 0 "R11" H 10120 2246 50  0000 L CNN
-F 1 "100" H 10120 2155 50  0000 L CNN
-F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 9980 2200 50  0001 C CNN
-F 3 "~" H 10050 2200 50  0001 C CNN
-	1    10050 2200
-	1    0    0    -1  
-$EndComp
 $Comp
 L Device:R R12
 U 1 1 5EB7D3EC
@@ -965,144 +640,172 @@ F 3 "~" H 5900 4900 50  0001 C CNN
 	0    1    1    0   
 $EndComp
 Wire Wire Line
-	2850 2350 2850 2850
-Wire Wire Line
-	3750 2350 3750 2850
-Wire Wire Line
-	4650 2350 4650 2850
-Wire Wire Line
-	5550 2350 5550 2850
-Wire Wire Line
-	6450 2350 6450 2850
-Wire Wire Line
-	7350 2350 7350 2850
-Wire Wire Line
-	7350 2850 7450 2850
-Wire Wire Line
-	8250 2350 8250 2850
-Wire Wire Line
-	9150 2350 9150 2850
-Wire Wire Line
-	10050 2350 10050 2850
-Wire Wire Line
-	10050 1900 10050 2050
-Wire Wire Line
-	9150 1900 9150 2050
-Wire Wire Line
-	8250 1900 8250 2050
-Wire Wire Line
-	7350 2050 7350 1900
-Wire Wire Line
-	6450 1900 6450 2050
-Wire Wire Line
-	5550 1900 5550 2050
-Wire Wire Line
-	4650 2050 4650 1900
-Wire Wire Line
-	3750 1900 3750 2050
-Wire Wire Line
-	2850 2050 2850 1900
-Wire Wire Line
 	3850 4900 3950 4900
 Wire Wire Line
 	5600 4900 5750 4900
+Wire Wire Line
+	9550 1900 9550 2050
+Wire Wire Line
+	10450 1900 10450 2050
 $Comp
-L Device:R R14
-U 1 1 5E7E583A
-P 1450 2200
-F 0 "R14" H 1520 2246 50  0000 L CNN
-F 1 "220" H 1520 2155 50  0000 L CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 1380 2200 50  0001 C CNN
-F 3 "~" H 1450 2200 50  0001 C CNN
-	1    1450 2200
+L power:+5V #PWR0124
+U 1 1 5E8A32BB
+P 10450 1900
+F 0 "#PWR0124" H 10450 1750 50  0001 C CNN
+F 1 "+5V" H 10465 2073 50  0000 C CNN
+F 2 "" H 10450 1900 50  0001 C CNN
+F 3 "" H 10450 1900 50  0001 C CNN
+	1    10450 1900
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:R R15
-U 1 1 5E7E5ED6
-P 2350 2200
-F 0 "R15" H 2420 2246 50  0000 L CNN
-F 1 "220" H 2420 2155 50  0000 L CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 2280 2200 50  0001 C CNN
-F 3 "~" H 2350 2200 50  0001 C CNN
-	1    2350 2200
+L power:+5V #PWR0123
+U 1 1 5E89A964
+P 9550 1900
+F 0 "#PWR0123" H 9550 1750 50  0001 C CNN
+F 1 "+5V" H 9565 2073 50  0000 C CNN
+F 2 "" H 9550 1900 50  0001 C CNN
+F 3 "" H 9550 1900 50  0001 C CNN
+	1    9550 1900
 	1    0    0    -1  
 $EndComp
+Wire Wire Line
+	8650 1900 8650 2050
 $Comp
-L Device:R R16
-U 1 1 5E7E64BB
-P 3250 2200
-F 0 "R16" H 3320 2246 50  0000 L CNN
-F 1 "220" H 3320 2155 50  0000 L CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 3180 2200 50  0001 C CNN
-F 3 "~" H 3250 2200 50  0001 C CNN
-	1    3250 2200
+L power:+5V #PWR0122
+U 1 1 5E892120
+P 8650 1900
+F 0 "#PWR0122" H 8650 1750 50  0001 C CNN
+F 1 "+5V" H 8665 2073 50  0000 C CNN
+F 2 "" H 8650 1900 50  0001 C CNN
+F 3 "" H 8650 1900 50  0001 C CNN
+	1    8650 1900
 	1    0    0    -1  
 $EndComp
+Wire Wire Line
+	7750 1900 7750 2050
 $Comp
-L Device:R R17
-U 1 1 5E7E6AA9
-P 4150 2200
-F 0 "R17" H 4220 2246 50  0000 L CNN
-F 1 "220" H 4220 2155 50  0000 L CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 4080 2200 50  0001 C CNN
-F 3 "~" H 4150 2200 50  0001 C CNN
-	1    4150 2200
+L power:+5V #PWR0121
+U 1 1 5E889B49
+P 7750 1900
+F 0 "#PWR0121" H 7750 1750 50  0001 C CNN
+F 1 "+5V" H 7765 2073 50  0000 C CNN
+F 2 "" H 7750 1900 50  0001 C CNN
+F 3 "" H 7750 1900 50  0001 C CNN
+	1    7750 1900
 	1    0    0    -1  
 $EndComp
+Wire Wire Line
+	6850 1900 6850 2050
 $Comp
-L Device:R R18
-U 1 1 5E7E71AC
-P 5050 2200
-F 0 "R18" H 5120 2246 50  0000 L CNN
-F 1 "220" H 5120 2155 50  0000 L CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 4980 2200 50  0001 C CNN
-F 3 "~" H 5050 2200 50  0001 C CNN
-	1    5050 2200
+L power:+5V #PWR0120
+U 1 1 5E88160D
+P 6850 1900
+F 0 "#PWR0120" H 6850 1750 50  0001 C CNN
+F 1 "+5V" H 6865 2073 50  0000 C CNN
+F 2 "" H 6850 1900 50  0001 C CNN
+F 3 "" H 6850 1900 50  0001 C CNN
+	1    6850 1900
 	1    0    0    -1  
 $EndComp
+Wire Wire Line
+	1450 1900 1450 2050
 $Comp
-L Device:R R19
-U 1 1 5E7E7A78
-P 5950 2200
-F 0 "R19" H 6020 2246 50  0000 L CNN
-F 1 "220" H 6020 2155 50  0000 L CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 5880 2200 50  0001 C CNN
-F 3 "~" H 5950 2200 50  0001 C CNN
-	1    5950 2200
+L power:+5V #PWR0119
+U 1 1 5E879230
+P 1450 1900
+F 0 "#PWR0119" H 1450 1750 50  0001 C CNN
+F 1 "+5V" H 1465 2073 50  0000 C CNN
+F 2 "" H 1450 1900 50  0001 C CNN
+F 3 "" H 1450 1900 50  0001 C CNN
+	1    1450 1900
 	1    0    0    -1  
 $EndComp
+Wire Wire Line
+	2350 1900 2350 2050
 $Comp
-L Device:R R20
-U 1 1 5E7E8D5A
-P 6850 2200
-F 0 "R20" H 6920 2246 50  0000 L CNN
-F 1 "220" H 6920 2155 50  0000 L CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 6780 2200 50  0001 C CNN
-F 3 "~" H 6850 2200 50  0001 C CNN
-	1    6850 2200
+L power:+5V #PWR0118
+U 1 1 5E87109C
+P 2350 1900
+F 0 "#PWR0118" H 2350 1750 50  0001 C CNN
+F 1 "+5V" H 2365 2073 50  0000 C CNN
+F 2 "" H 2350 1900 50  0001 C CNN
+F 3 "" H 2350 1900 50  0001 C CNN
+	1    2350 1900
 	1    0    0    -1  
 $EndComp
+Wire Wire Line
+	3250 1900 3250 2050
 $Comp
-L Device:R R21
-U 1 1 5E7E94E6
-P 7750 2200
-F 0 "R21" H 7820 2246 50  0000 L CNN
-F 1 "220" H 7820 2155 50  0000 L CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 7680 2200 50  0001 C CNN
-F 3 "~" H 7750 2200 50  0001 C CNN
-	1    7750 2200
+L power:+5V #PWR0117
+U 1 1 5E8691C8
+P 3250 1900
+F 0 "#PWR0117" H 3250 1750 50  0001 C CNN
+F 1 "+5V" H 3265 2073 50  0000 C CNN
+F 2 "" H 3250 1900 50  0001 C CNN
+F 3 "" H 3250 1900 50  0001 C CNN
+	1    3250 1900
 	1    0    0    -1  
 $EndComp
+Wire Wire Line
+	4150 1900 4150 2050
 $Comp
-L Device:R R22
-U 1 1 5E7E99E2
-P 8650 2200
-F 0 "R22" H 8720 2246 50  0000 L CNN
-F 1 "220" H 8720 2155 50  0000 L CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 8580 2200 50  0001 C CNN
-F 3 "~" H 8650 2200 50  0001 C CNN
-	1    8650 2200
+L power:+5V #PWR0116
+U 1 1 5E861633
+P 4150 1900
+F 0 "#PWR0116" H 4150 1750 50  0001 C CNN
+F 1 "+5V" H 4165 2073 50  0000 C CNN
+F 2 "" H 4150 1900 50  0001 C CNN
+F 3 "" H 4150 1900 50  0001 C CNN
+	1    4150 1900
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5050 1900 5050 2050
+$Comp
+L power:+5V #PWR0115
+U 1 1 5E857526
+P 5050 1900
+F 0 "#PWR0115" H 5050 1750 50  0001 C CNN
+F 1 "+5V" H 5065 2073 50  0000 C CNN
+F 2 "" H 5050 1900 50  0001 C CNN
+F 3 "" H 5050 1900 50  0001 C CNN
+	1    5050 1900
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	5950 1900 5950 2050
+Wire Wire Line
+	5950 2350 5950 2650
+Wire Wire Line
+	1450 2350 1450 2650
+Wire Wire Line
+	2350 2350 2350 2650
+Wire Wire Line
+	3250 2350 3250 2650
+Wire Wire Line
+	4150 2350 4150 2650
+Wire Wire Line
+	5050 2350 5050 2650
+Wire Wire Line
+	6850 2350 6850 2650
+Wire Wire Line
+	7750 2350 7750 2650
+Wire Wire Line
+	8650 2350 8650 2650
+Wire Wire Line
+	9550 2350 9550 2650
+Wire Wire Line
+	10450 2350 10450 2650
+$Comp
+L Device:R R24
+U 1 1 5E7EA6B5
+P 10450 2200
+F 0 "R24" H 10520 2246 50  0000 L CNN
+F 1 "220" H 10520 2155 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 10380 2200 50  0001 C CNN
+F 3 "~" H 10450 2200 50  0001 C CNN
+	1    10450 2200
 	1    0    0    -1  
 $EndComp
 $Comp
@@ -1117,168 +820,465 @@ F 3 "~" H 9550 2200 50  0001 C CNN
 	1    0    0    -1  
 $EndComp
 $Comp
-L Device:R R24
-U 1 1 5E7EA6B5
-P 10450 2200
-F 0 "R24" H 10520 2246 50  0000 L CNN
-F 1 "220" H 10520 2155 50  0000 L CNN
-F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 10380 2200 50  0001 C CNN
-F 3 "~" H 10450 2200 50  0001 C CNN
-	1    10450 2200
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	10450 2350 10450 2650
-Wire Wire Line
-	9550 2350 9550 2650
-Wire Wire Line
-	8650 2350 8650 2650
-Wire Wire Line
-	7750 2350 7750 2650
-Wire Wire Line
-	6850 2350 6850 2650
-Wire Wire Line
-	5050 2350 5050 2650
-Wire Wire Line
-	4150 2350 4150 2650
-Wire Wire Line
-	3250 2350 3250 2650
-Wire Wire Line
-	2350 2350 2350 2650
-Wire Wire Line
-	1450 2350 1450 2650
-Wire Wire Line
-	5950 2350 5950 2650
-Wire Wire Line
-	5950 1900 5950 2050
-$Comp
-L power:+5V #PWR0115
-U 1 1 5E857526
-P 5050 1900
-F 0 "#PWR0115" H 5050 1750 50  0001 C CNN
-F 1 "+5V" H 5065 2073 50  0000 C CNN
-F 2 "" H 5050 1900 50  0001 C CNN
-F 3 "" H 5050 1900 50  0001 C CNN
-	1    5050 1900
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	5050 1900 5050 2050
-$Comp
-L power:+5V #PWR0116
-U 1 1 5E861633
-P 4150 1900
-F 0 "#PWR0116" H 4150 1750 50  0001 C CNN
-F 1 "+5V" H 4165 2073 50  0000 C CNN
-F 2 "" H 4150 1900 50  0001 C CNN
-F 3 "" H 4150 1900 50  0001 C CNN
-	1    4150 1900
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	4150 1900 4150 2050
-$Comp
-L power:+5V #PWR0117
-U 1 1 5E8691C8
-P 3250 1900
-F 0 "#PWR0117" H 3250 1750 50  0001 C CNN
-F 1 "+5V" H 3265 2073 50  0000 C CNN
-F 2 "" H 3250 1900 50  0001 C CNN
-F 3 "" H 3250 1900 50  0001 C CNN
-	1    3250 1900
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	3250 1900 3250 2050
-$Comp
-L power:+5V #PWR0118
-U 1 1 5E87109C
-P 2350 1900
-F 0 "#PWR0118" H 2350 1750 50  0001 C CNN
-F 1 "+5V" H 2365 2073 50  0000 C CNN
-F 2 "" H 2350 1900 50  0001 C CNN
-F 3 "" H 2350 1900 50  0001 C CNN
-	1    2350 1900
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	2350 1900 2350 2050
-$Comp
-L power:+5V #PWR0119
-U 1 1 5E879230
-P 1450 1900
-F 0 "#PWR0119" H 1450 1750 50  0001 C CNN
-F 1 "+5V" H 1465 2073 50  0000 C CNN
-F 2 "" H 1450 1900 50  0001 C CNN
-F 3 "" H 1450 1900 50  0001 C CNN
-	1    1450 1900
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	1450 1900 1450 2050
-$Comp
-L power:+5V #PWR0120
-U 1 1 5E88160D
-P 6850 1900
-F 0 "#PWR0120" H 6850 1750 50  0001 C CNN
-F 1 "+5V" H 6865 2073 50  0000 C CNN
-F 2 "" H 6850 1900 50  0001 C CNN
-F 3 "" H 6850 1900 50  0001 C CNN
-	1    6850 1900
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	6850 1900 6850 2050
-$Comp
-L power:+5V #PWR0121
-U 1 1 5E889B49
-P 7750 1900
-F 0 "#PWR0121" H 7750 1750 50  0001 C CNN
-F 1 "+5V" H 7765 2073 50  0000 C CNN
-F 2 "" H 7750 1900 50  0001 C CNN
-F 3 "" H 7750 1900 50  0001 C CNN
-	1    7750 1900
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	7750 1900 7750 2050
-$Comp
-L power:+5V #PWR0122
-U 1 1 5E892120
-P 8650 1900
-F 0 "#PWR0122" H 8650 1750 50  0001 C CNN
-F 1 "+5V" H 8665 2073 50  0000 C CNN
-F 2 "" H 8650 1900 50  0001 C CNN
-F 3 "" H 8650 1900 50  0001 C CNN
-	1    8650 1900
-	1    0    0    -1  
-$EndComp
-Wire Wire Line
-	8650 1900 8650 2050
-$Comp
-L power:+5V #PWR0123
-U 1 1 5E89A964
-P 9550 1900
-F 0 "#PWR0123" H 9550 1750 50  0001 C CNN
-F 1 "+5V" H 9565 2073 50  0000 C CNN
-F 2 "" H 9550 1900 50  0001 C CNN
-F 3 "" H 9550 1900 50  0001 C CNN
-	1    9550 1900
+L Device:R R22
+U 1 1 5E7E99E2
+P 8650 2200
+F 0 "R22" H 8720 2246 50  0000 L CNN
+F 1 "220" H 8720 2155 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 8580 2200 50  0001 C CNN
+F 3 "~" H 8650 2200 50  0001 C CNN
+	1    8650 2200
 	1    0    0    -1  
 $EndComp
 $Comp
-L power:+5V #PWR0124
-U 1 1 5E8A32BB
-P 10450 1900
-F 0 "#PWR0124" H 10450 1750 50  0001 C CNN
-F 1 "+5V" H 10465 2073 50  0000 C CNN
-F 2 "" H 10450 1900 50  0001 C CNN
-F 3 "" H 10450 1900 50  0001 C CNN
-	1    10450 1900
+L Device:R R21
+U 1 1 5E7E94E6
+P 7750 2200
+F 0 "R21" H 7820 2246 50  0000 L CNN
+F 1 "220" H 7820 2155 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 7680 2200 50  0001 C CNN
+F 3 "~" H 7750 2200 50  0001 C CNN
+	1    7750 2200
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R20
+U 1 1 5E7E8D5A
+P 6850 2200
+F 0 "R20" H 6920 2246 50  0000 L CNN
+F 1 "220" H 6920 2155 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 6780 2200 50  0001 C CNN
+F 3 "~" H 6850 2200 50  0001 C CNN
+	1    6850 2200
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R19
+U 1 1 5E7E7A78
+P 5950 2200
+F 0 "R19" H 6020 2246 50  0000 L CNN
+F 1 "220" H 6020 2155 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 5880 2200 50  0001 C CNN
+F 3 "~" H 5950 2200 50  0001 C CNN
+	1    5950 2200
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R18
+U 1 1 5E7E71AC
+P 5050 2200
+F 0 "R18" H 5120 2246 50  0000 L CNN
+F 1 "220" H 5120 2155 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 4980 2200 50  0001 C CNN
+F 3 "~" H 5050 2200 50  0001 C CNN
+	1    5050 2200
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R17
+U 1 1 5E7E6AA9
+P 4150 2200
+F 0 "R17" H 4220 2246 50  0000 L CNN
+F 1 "220" H 4220 2155 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 4080 2200 50  0001 C CNN
+F 3 "~" H 4150 2200 50  0001 C CNN
+	1    4150 2200
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R16
+U 1 1 5E7E64BB
+P 3250 2200
+F 0 "R16" H 3320 2246 50  0000 L CNN
+F 1 "220" H 3320 2155 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 3180 2200 50  0001 C CNN
+F 3 "~" H 3250 2200 50  0001 C CNN
+	1    3250 2200
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R15
+U 1 1 5E7E5ED6
+P 2350 2200
+F 0 "R15" H 2420 2246 50  0000 L CNN
+F 1 "220" H 2420 2155 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 2280 2200 50  0001 C CNN
+F 3 "~" H 2350 2200 50  0001 C CNN
+	1    2350 2200
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R14
+U 1 1 5E7E583A
+P 1450 2200
+F 0 "R14" H 1520 2246 50  0000 L CNN
+F 1 "220" H 1520 2155 50  0000 L CNN
+F 2 "Resistor_THT:R_Axial_DIN0207_L6.3mm_D2.5mm_P10.16mm_Horizontal" V 1380 2200 50  0001 C CNN
+F 3 "~" H 1450 2200 50  0001 C CNN
+	1    1450 2200
 	1    0    0    -1  
 $EndComp
 Wire Wire Line
-	10450 1900 10450 2050
+	2850 2050 2850 1900
 Wire Wire Line
-	9550 1900 9550 2050
+	3750 1900 3750 2050
+Wire Wire Line
+	4650 2050 4650 1900
+Wire Wire Line
+	5550 1900 5550 2050
+Wire Wire Line
+	6450 1900 6450 2050
+Wire Wire Line
+	7350 2050 7350 1900
+Wire Wire Line
+	8250 1900 8250 2050
+Wire Wire Line
+	9150 1900 9150 2050
+Wire Wire Line
+	10050 1900 10050 2050
+Wire Wire Line
+	10050 2350 10050 2850
+Wire Wire Line
+	9150 2350 9150 2850
+Wire Wire Line
+	8250 2350 8250 2850
+Wire Wire Line
+	7350 2850 7450 2850
+Wire Wire Line
+	7350 2350 7350 2850
+Wire Wire Line
+	6450 2350 6450 2850
+Wire Wire Line
+	5550 2350 5550 2850
+Wire Wire Line
+	4650 2350 4650 2850
+Wire Wire Line
+	3750 2350 3750 2850
+Wire Wire Line
+	2850 2350 2850 2850
+$Comp
+L Device:R R11
+U 1 1 5EB7CB01
+P 10050 2200
+F 0 "R11" H 10120 2246 50  0000 L CNN
+F 1 "100" H 10120 2155 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 9980 2200 50  0001 C CNN
+F 3 "~" H 10050 2200 50  0001 C CNN
+	1    10050 2200
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R10
+U 1 1 5EB7C1EC
+P 9150 2200
+F 0 "R10" H 9220 2246 50  0000 L CNN
+F 1 "100" H 9220 2155 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 9080 2200 50  0001 C CNN
+F 3 "~" H 9150 2200 50  0001 C CNN
+	1    9150 2200
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R9
+U 1 1 5EB7BA0D
+P 8250 2200
+F 0 "R9" H 8320 2246 50  0000 L CNN
+F 1 "100" H 8320 2155 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 8180 2200 50  0001 C CNN
+F 3 "~" H 8250 2200 50  0001 C CNN
+	1    8250 2200
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R8
+U 1 1 5EB7B308
+P 7350 2200
+F 0 "R8" H 7420 2246 50  0000 L CNN
+F 1 "100" H 7420 2155 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 7280 2200 50  0001 C CNN
+F 3 "~" H 7350 2200 50  0001 C CNN
+	1    7350 2200
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R7
+U 1 1 5EB7AB94
+P 6450 2200
+F 0 "R7" H 6520 2246 50  0000 L CNN
+F 1 "100" H 6520 2155 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 6380 2200 50  0001 C CNN
+F 3 "~" H 6450 2200 50  0001 C CNN
+	1    6450 2200
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R6
+U 1 1 5EB7A332
+P 5550 2200
+F 0 "R6" H 5620 2246 50  0000 L CNN
+F 1 "100" H 5620 2155 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 5480 2200 50  0001 C CNN
+F 3 "~" H 5550 2200 50  0001 C CNN
+	1    5550 2200
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R5
+U 1 1 5EB79A13
+P 4650 2200
+F 0 "R5" H 4720 2246 50  0000 L CNN
+F 1 "100" H 4720 2155 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 4580 2200 50  0001 C CNN
+F 3 "~" H 4650 2200 50  0001 C CNN
+	1    4650 2200
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R4
+U 1 1 5EB79090
+P 3750 2200
+F 0 "R4" H 3820 2246 50  0000 L CNN
+F 1 "100" H 3820 2155 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 3680 2200 50  0001 C CNN
+F 3 "~" H 3750 2200 50  0001 C CNN
+	1    3750 2200
+	1    0    0    -1  
+$EndComp
+$Comp
+L Device:R R3
+U 1 1 5EB783DB
+P 2850 2200
+F 0 "R3" H 2920 2246 50  0000 L CNN
+F 1 "100" H 2920 2155 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 2780 2200 50  0001 C CNN
+F 3 "~" H 2850 2200 50  0001 C CNN
+	1    2850 2200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1050 1900 1050 2050
+$Comp
+L Device:R R1
+U 1 1 5EB4B215
+P 1050 2200
+F 0 "R1" H 1120 2246 50  0000 L CNN
+F 1 "100" H 1120 2155 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 980 2200 50  0001 C CNN
+F 3 "~" H 1050 2200 50  0001 C CNN
+	1    1050 2200
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	1950 1900 1950 2050
+$Comp
+L Device:R R2
+U 1 1 5EB342FC
+P 1950 2200
+F 0 "R2" H 2020 2246 50  0000 L CNN
+F 1 "100" H 2020 2155 50  0000 L CNN
+F 2 "Resistor_SMD:R_1206_3216Metric_Pad1.42x1.75mm_HandSolder" V 1880 2200 50  0001 C CNN
+F 3 "~" H 1950 2200 50  0001 C CNN
+	1    1950 2200
+	1    0    0    -1  
+$EndComp
+$Comp
+L power:+5V #PWR0114
+U 1 1 5EA3FDDB
+P 5950 1900
+F 0 "#PWR0114" H 5950 1750 50  0001 C CNN
+F 1 "+5V" H 5965 2073 50  0000 C CNN
+F 2 "" H 5950 1900 50  0001 C CNN
+F 3 "" H 5950 1900 50  0001 C CNN
+	1    5950 1900
+	1    0    0    -1  
+$EndComp
+Wire Wire Line
+	10150 2850 10050 2850
+Text HLabel 10050 1900 1    50   Input ~ 0
++3_dB
+Wire Wire Line
+	9250 2850 9150 2850
+Text HLabel 9150 1900 1    50   Input ~ 0
++2_dB
+Wire Wire Line
+	8350 2850 8250 2850
+Text HLabel 8250 1900 1    50   Input ~ 0
++1_dB
+Text HLabel 7350 1900 1    50   Input ~ 0
+0_dB
+Wire Wire Line
+	6550 2850 6450 2850
+Text HLabel 6450 1900 1    50   Input ~ 0
+-1_dB
+Wire Wire Line
+	5650 2850 5550 2850
+Text HLabel 5550 1900 1    50   Input ~ 0
+-2_dB
+Wire Wire Line
+	4750 2850 4650 2850
+Text HLabel 4650 1900 1    50   Input ~ 0
+-3_dB
+Wire Wire Line
+	3850 2850 3750 2850
+Text HLabel 3750 1900 1    50   Input ~ 0
+-5_dB
+Wire Wire Line
+	2950 2850 2850 2850
+Text HLabel 2850 1900 1    50   Input ~ 0
+-7_dB
+Wire Wire Line
+	1950 2850 1950 2350
+Wire Wire Line
+	2050 2850 1950 2850
+Text HLabel 1950 1900 1    50   Input ~ 0
+-10_dB
+Wire Wire Line
+	1050 2850 1050 2350
+Wire Wire Line
+	1150 2850 1050 2850
+Text HLabel 1050 1900 1    50   Input ~ 0
+-20_dB
+$Comp
+L Transistor_FET:2N7002K Q?
+U 1 1 5E88148C
+P 4950 2850
+AR Path="/5E88148C" Ref="Q?"  Part="1" 
+AR Path="/5E7FE9D4/5E88148C" Ref="Q5"  Part="1" 
+F 0 "Q5" H 5154 2896 50  0000 L CNN
+F 1 "2N7002K" H 5154 2805 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23_Handsoldering" H 5150 2775 50  0001 L CIN
+F 3 "https://www.diodes.com/assets/Datasheets/ds30896.pdf" H 4950 2850 50  0001 L CNN
+	1    4950 2850
+	1    0    0    -1  
+$EndComp
+$Comp
+L Transistor_FET:2N7002K Q?
+U 1 1 5E900B38
+P 2250 2850
+AR Path="/5E900B38" Ref="Q?"  Part="1" 
+AR Path="/5E7FE9D4/5E900B38" Ref="Q2"  Part="1" 
+F 0 "Q2" H 2454 2896 50  0000 L CNN
+F 1 "2N7002K" H 2454 2805 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23_Handsoldering" H 2450 2775 50  0001 L CIN
+F 3 "https://www.diodes.com/assets/Datasheets/ds30896.pdf" H 2250 2850 50  0001 L CNN
+	1    2250 2850
+	1    0    0    -1  
+$EndComp
+$Comp
+L Transistor_FET:2N7002K Q?
+U 1 1 5E8814C2
+P 1350 2850
+AR Path="/5E8814C2" Ref="Q?"  Part="1" 
+AR Path="/5E7FE9D4/5E8814C2" Ref="Q1"  Part="1" 
+F 0 "Q1" H 1554 2896 50  0000 L CNN
+F 1 "2N7002K" H 1554 2805 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23_Handsoldering" H 1550 2775 50  0001 L CIN
+F 3 "https://www.diodes.com/assets/Datasheets/ds30896.pdf" H 1350 2850 50  0001 L CNN
+	1    1350 2850
+	1    0    0    -1  
+$EndComp
+$Comp
+L Transistor_FET:2N7002K Q?
+U 1 1 5E8814B6
+P 7650 2850
+AR Path="/5E8814B6" Ref="Q?"  Part="1" 
+AR Path="/5E7FE9D4/5E8814B6" Ref="Q8"  Part="1" 
+F 0 "Q8" H 7854 2896 50  0000 L CNN
+F 1 "2N7002K" H 7854 2805 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23_Handsoldering" H 7850 2775 50  0001 L CIN
+F 3 "https://www.diodes.com/assets/Datasheets/ds30896.pdf" H 7650 2850 50  0001 L CNN
+	1    7650 2850
+	1    0    0    -1  
+$EndComp
+$Comp
+L Transistor_FET:2N7002K Q?
+U 1 1 5E8814B0
+P 8550 2850
+AR Path="/5E8814B0" Ref="Q?"  Part="1" 
+AR Path="/5E7FE9D4/5E8814B0" Ref="Q9"  Part="1" 
+F 0 "Q9" H 8754 2896 50  0000 L CNN
+F 1 "2N7002K" H 8754 2805 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23_Handsoldering" H 8750 2775 50  0001 L CIN
+F 3 "https://www.diodes.com/assets/Datasheets/ds30896.pdf" H 8550 2850 50  0001 L CNN
+	1    8550 2850
+	1    0    0    -1  
+$EndComp
+$Comp
+L Transistor_FET:2N7002K Q?
+U 1 1 5E8814AA
+P 9450 2850
+AR Path="/5E8814AA" Ref="Q?"  Part="1" 
+AR Path="/5E7FE9D4/5E8814AA" Ref="Q10"  Part="1" 
+F 0 "Q10" H 9654 2896 50  0000 L CNN
+F 1 "2N7002K" H 9654 2805 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23_Handsoldering" H 9650 2775 50  0001 L CIN
+F 3 "https://www.diodes.com/assets/Datasheets/ds30896.pdf" H 9450 2850 50  0001 L CNN
+	1    9450 2850
+	1    0    0    -1  
+$EndComp
+$Comp
+L Transistor_FET:2N7002K Q?
+U 1 1 5E8814A4
+P 5850 2850
+AR Path="/5E8814A4" Ref="Q?"  Part="1" 
+AR Path="/5E7FE9D4/5E8814A4" Ref="Q6"  Part="1" 
+F 0 "Q6" H 6054 2896 50  0000 L CNN
+F 1 "2N7002K" H 6054 2805 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23_Handsoldering" H 6050 2775 50  0001 L CIN
+F 3 "https://www.diodes.com/assets/Datasheets/ds30896.pdf" H 5850 2850 50  0001 L CNN
+	1    5850 2850
+	1    0    0    -1  
+$EndComp
+$Comp
+L Transistor_FET:2N7002K Q?
+U 1 1 5E88149E
+P 6750 2850
+AR Path="/5E88149E" Ref="Q?"  Part="1" 
+AR Path="/5E7FE9D4/5E88149E" Ref="Q7"  Part="1" 
+F 0 "Q7" H 6954 2896 50  0000 L CNN
+F 1 "2N7002K" H 6954 2805 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23_Handsoldering" H 6950 2775 50  0001 L CIN
+F 3 "https://www.diodes.com/assets/Datasheets/ds30896.pdf" H 6750 2850 50  0001 L CNN
+	1    6750 2850
+	1    0    0    -1  
+$EndComp
+$Comp
+L Transistor_FET:2N7002K Q?
+U 1 1 5E881498
+P 10350 2850
+AR Path="/5E881498" Ref="Q?"  Part="1" 
+AR Path="/5E7FE9D4/5E881498" Ref="Q11"  Part="1" 
+F 0 "Q11" H 10554 2896 50  0000 L CNN
+F 1 "2N7002K" H 10554 2805 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23_Handsoldering" H 10550 2775 50  0001 L CIN
+F 3 "https://www.diodes.com/assets/Datasheets/ds30896.pdf" H 10350 2850 50  0001 L CNN
+	1    10350 2850
+	1    0    0    -1  
+$EndComp
+$Comp
+L Transistor_FET:2N7002K Q?
+U 1 1 5E881492
+P 4050 2850
+AR Path="/5E881492" Ref="Q?"  Part="1" 
+AR Path="/5E7FE9D4/5E881492" Ref="Q4"  Part="1" 
+F 0 "Q4" H 4254 2896 50  0000 L CNN
+F 1 "2N7002K" H 4254 2805 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23_Handsoldering" H 4250 2775 50  0001 L CIN
+F 3 "https://www.diodes.com/assets/Datasheets/ds30896.pdf" H 4050 2850 50  0001 L CNN
+	1    4050 2850
+	1    0    0    -1  
+$EndComp
+$Comp
+L Transistor_FET:2N7002K Q?
+U 1 1 5E881478
+P 3150 2850
+AR Path="/5E881478" Ref="Q?"  Part="1" 
+AR Path="/5E7FE9D4/5E881478" Ref="Q3"  Part="1" 
+F 0 "Q3" H 3354 2896 50  0000 L CNN
+F 1 "2N7002K" H 3354 2805 50  0000 L CNN
+F 2 "Package_TO_SOT_SMD:SOT-23_Handsoldering" H 3350 2775 50  0001 L CIN
+F 3 "https://www.diodes.com/assets/Datasheets/ds30896.pdf" H 3150 2850 50  0001 L CNN
+	1    3150 2850
+	1    0    0    -1  
+$EndComp
 $EndSCHEMATC
