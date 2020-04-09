@@ -27,22 +27,26 @@
 #include <stdlib.h>
 #include <math.h>
 #include <stdbool.h>
-#include "arm_math.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
 /* USER CODE BEGIN PTD */
-typedef union {
-   int32_t i;
-   q31_t q;
-} Sample;
+
 /* USER CODE END PTD */
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define SAMPLE_RATE 			44  	// kHz
-#define WINDOW_DURATION		1			// ms
-#define SAMPLE_WINDOW 		(SAMPLE_RATE * WINDOW_DURATION)
+#define P3_THRESHOLD		16736706
+#define P2_THRESHOLD		14773511
+#define P1_THRESHOLD		13314048
+#define PN0_THRESHOLD		11695486
+#define N1_THRESHOLD		10559338
+#define N2_THRESHOLD		9287514
+#define N3_THRESHOLD		8166018
+#define N5_THRESHOLD		6670090
+#define N7_THRESHOLD		5234913
+#define N10_THRESHOLD		3702249
+#define N20_THRESHOLD		1141805
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -60,9 +64,8 @@ UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
 uint16_t rxBuffer[8];
-float32_t lSampleBuf[SAMPLE_WINDOW];
-float32_t rSampleBuf[SAMPLE_WINDOW];
-uint16_t sampleCounter = 0;
+uint32_t lSamplePeak = 0;
+uint32_t rSamplePeak = 0;
 volatile bool output = false;
 /* USER CODE END PV */
 
@@ -74,6 +77,7 @@ static void MX_I2S1_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_TIM14_Init(void);
 /* USER CODE BEGIN PFP */
+static void int2buf(char *buf, uint32_t num, char *chn);
 static void float2buf(uint8_t *buf, float num, char *chn);
 static bool storeSample();
 static void startupLeds();
@@ -118,7 +122,7 @@ int main(void)
   MX_USART2_UART_Init();
   MX_TIM14_Init();
   /* USER CODE BEGIN 2 */
-  startupLeds();
+  // startupLeds();
 
   HAL_I2S_Receive_DMA(&hi2s1, rxBuffer, 4);
   HAL_TIM_Base_Start_IT(&htim14);
@@ -128,29 +132,19 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-  	if (sampleCounter == SAMPLE_WINDOW) {
-  		// Calculate RMS value for each channel
-			float32_t lRmsF;
-			float32_t rRmsF;
-			arm_rms_f32(lSampleBuf, SAMPLE_WINDOW, &lRmsF);
-			arm_rms_f32(rSampleBuf, SAMPLE_WINDOW, &rRmsF);
-			sampleCounter = 0;	// Release sample buffer lock
-
 			if (output) {
-				uint32_t lRms = (uint32_t) (lRmsF * 1E8);
-				uint32_t rRms = (uint32_t) (lRmsF * 1E8);
-
-				setLeds(lRms);
+				setLeds(lSamplePeak);
+				lSamplePeak = 0;
+				rSamplePeak = 0;
 				output = false;
 			}
 
 			// Send data via UART2
-			uint8_t buffer[13] = {"0"};
-      float2buf(buffer, lRmsF, "L");
-      HAL_UART_Transmit(&huart2, buffer, sizeof(buffer)/sizeof(*buffer) - 1, 0xFF);
-      float2buf(buffer, rRmsF, "R");
-      HAL_UART_Transmit(&huart2, buffer, sizeof(buffer)/sizeof(*buffer) - 1, 0xFF);
-  	}
+			char buffer[11] = {"0"};
+      int2buf(buffer, lSamplePeak, "L");
+      HAL_UART_Transmit(&huart2, buffer, sizeof(buffer)/sizeof(*buffer), 0xFF);
+      int2buf(buffer, rSamplePeak, "R");
+      HAL_UART_Transmit(&huart2, buffer, sizeof(buffer)/sizeof(*buffer), 0xFF);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -382,6 +376,12 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
+static inline void int2buf(char *buf, uint32_t num, char *chn) {
+  // Set channel indicator
+  buf[0] = *chn;
+  sprintf(buf+1, "%8ul", num);
+}
+
 static inline void float2buf(uint8_t *buf, float num, char *chn) {
   // Set channel indicator
   buf[0] = *chn;
@@ -389,22 +389,21 @@ static inline void float2buf(uint8_t *buf, float num, char *chn) {
 }
 
 static bool storeSample() {
-  Sample lSample;
-  Sample rSample;
+  int32_t lSample = (int32_t) (rxBuffer[0] << 16) | rxBuffer[1];
+  int32_t rSample = (int32_t) (rxBuffer[2] << 16) | rxBuffer[3];
 
-  lSample.i = (int32_t) abs((rxBuffer[0] << 16) | rxBuffer[1]);
-  rSample.i = (int32_t) abs((rxBuffer[2] << 16) | rxBuffer[3]);
+  lSample = abs(lSample >> 6);
+  rSample = abs(rSample >> 6);
 
-  float32_t lSampleF;
-  float32_t rSampleF;
-  arm_q31_to_float(&lSample.q, &lSampleF, 1);
-  arm_q31_to_float(&rSample.q, &rSampleF, 1);
+  if (lSample > lSamplePeak) {
+  	lSamplePeak = lSample;
+  }
 
-  lSampleBuf[sampleCounter] = lSampleF;
-  rSampleBuf[sampleCounter] = rSampleF;
-  sampleCounter++;
+  if (rSample > rSamplePeak) {
+    rSamplePeak = rSample;
+	}
 
-  if (lSample.i != 0 || rSample.i != 0) {
+  if (lSample != 0 || rSample != 0) {
     return true;
   } else {
   	return false;
@@ -444,46 +443,46 @@ static void setLeds(uint32_t rmsValue) {
   HAL_GPIO_WritePin(GPIOC, n20Pin_Pin|pn0Pin_Pin, GPIO_PIN_RESET);
   HAL_GPIO_WritePin(GPIOB, p1Pin_Pin|n3Pin_Pin|n7Pin_Pin|n5Pin_Pin, GPIO_PIN_RESET);
   // Values: 84762573	80666449	76068407	70737635	63152057	55983666	49568172	40023266	30826475	21597468	1686666
-  if (rmsValue >= 84762573) {
+  if (rmsValue >= P3_THRESHOLD) {
       HAL_GPIO_WritePin(GPIOA, p3Pin_Pin|p2Pin_Pin|n2Pin_Pin|n1Pin_Pin|n10Pin_Pin, GPIO_PIN_SET);
       HAL_GPIO_WritePin(GPIOC, n20Pin_Pin|pn0Pin_Pin, GPIO_PIN_SET);
       HAL_GPIO_WritePin(GPIOB, p1Pin_Pin|n3Pin_Pin|n7Pin_Pin|n5Pin_Pin, GPIO_PIN_SET);
-  } else if (rmsValue >= 80666449) {
+  } else if (rmsValue >= P2_THRESHOLD) {
       HAL_GPIO_WritePin(GPIOA, p2Pin_Pin|n2Pin_Pin|n1Pin_Pin|n10Pin_Pin, GPIO_PIN_SET);
       HAL_GPIO_WritePin(GPIOC, n20Pin_Pin|pn0Pin_Pin, GPIO_PIN_SET);
       HAL_GPIO_WritePin(GPIOB, p1Pin_Pin|n3Pin_Pin|n7Pin_Pin|n5Pin_Pin, GPIO_PIN_SET);
-  } else if (rmsValue >= 76068407) {
+  } else if (rmsValue >= P1_THRESHOLD) {
       HAL_GPIO_WritePin(GPIOA, n2Pin_Pin|n1Pin_Pin|n10Pin_Pin, GPIO_PIN_SET);
       HAL_GPIO_WritePin(GPIOC, n20Pin_Pin|pn0Pin_Pin, GPIO_PIN_SET);
       HAL_GPIO_WritePin(GPIOB, p1Pin_Pin|n3Pin_Pin|n7Pin_Pin|n5Pin_Pin, GPIO_PIN_SET);
-  } else if (rmsValue >= 70737635) {
+  } else if (rmsValue >= PN0_THRESHOLD) {
       HAL_GPIO_WritePin(GPIOA, n2Pin_Pin|n1Pin_Pin|n10Pin_Pin, GPIO_PIN_SET);
       HAL_GPIO_WritePin(GPIOC, n20Pin_Pin|pn0Pin_Pin, GPIO_PIN_SET);
       HAL_GPIO_WritePin(GPIOB, n3Pin_Pin|n7Pin_Pin|n5Pin_Pin, GPIO_PIN_SET);
-  } else if (rmsValue >= 63152057) {
+  } else if (rmsValue >= N1_THRESHOLD) {
       HAL_GPIO_WritePin(GPIOA, n2Pin_Pin|n1Pin_Pin|n10Pin_Pin, GPIO_PIN_SET);
       HAL_GPIO_WritePin(GPIOC, n20Pin_Pin, GPIO_PIN_SET);
       HAL_GPIO_WritePin(GPIOB, n3Pin_Pin|n7Pin_Pin|n5Pin_Pin, GPIO_PIN_SET);
-  } else if (rmsValue >= 55983666) {
+  } else if (rmsValue >= N2_THRESHOLD) {
       HAL_GPIO_WritePin(GPIOA, n2Pin_Pin|n10Pin_Pin, GPIO_PIN_SET);
       HAL_GPIO_WritePin(GPIOC, n20Pin_Pin, GPIO_PIN_SET);
       HAL_GPIO_WritePin(GPIOB, n3Pin_Pin|n7Pin_Pin|n5Pin_Pin, GPIO_PIN_SET);
-  } else if (rmsValue >= 49568172) {
+  } else if (rmsValue >= N3_THRESHOLD) {
       HAL_GPIO_WritePin(GPIOA, n10Pin_Pin, GPIO_PIN_SET);
       HAL_GPIO_WritePin(GPIOC, n20Pin_Pin, GPIO_PIN_SET);
       HAL_GPIO_WritePin(GPIOB, n3Pin_Pin|n7Pin_Pin|n5Pin_Pin, GPIO_PIN_SET);
-  } else if (rmsValue >= 40023266) {
+  } else if (rmsValue >= N5_THRESHOLD) {
       HAL_GPIO_WritePin(GPIOA, n10Pin_Pin, GPIO_PIN_SET);
       HAL_GPIO_WritePin(GPIOC, n20Pin_Pin, GPIO_PIN_SET);
       HAL_GPIO_WritePin(GPIOB, n7Pin_Pin|n5Pin_Pin, GPIO_PIN_SET);
-  } else if (rmsValue >= 30826475) {
+  } else if (rmsValue >= N7_THRESHOLD) {
       HAL_GPIO_WritePin(GPIOA, n10Pin_Pin, GPIO_PIN_SET);
       HAL_GPIO_WritePin(GPIOC, n20Pin_Pin, GPIO_PIN_SET);
       HAL_GPIO_WritePin(GPIOB, n7Pin_Pin, GPIO_PIN_SET);
-  } else if (rmsValue >= 21597468) {
+  } else if (rmsValue >= N10_THRESHOLD) {
       HAL_GPIO_WritePin(GPIOA, n10Pin_Pin, GPIO_PIN_SET);
       HAL_GPIO_WritePin(GPIOC, n20Pin_Pin, GPIO_PIN_SET);
-  } else if (rmsValue >= 1686666) {
+  } else if (rmsValue >= N20_THRESHOLD) {
       HAL_GPIO_WritePin(GPIOC, n20Pin_Pin, GPIO_PIN_SET);
   } else {
   	return;
@@ -491,14 +490,10 @@ static void setLeds(uint32_t rmsValue) {
 }
 
 void HAL_I2S_RxHalfCpltCallback (I2S_HandleTypeDef *hi2s) {
-  if (sampleCounter == SAMPLE_WINDOW) { return; }	// Fail safe
-
   storeSample();
 }
 
 void HAL_I2S_RxCpltCallback(I2S_HandleTypeDef *hi2s) {
-  if (sampleCounter == SAMPLE_WINDOW) { return; }	// Fail safe
-
   storeSample();
 }
 
