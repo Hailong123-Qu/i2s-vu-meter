@@ -66,7 +66,7 @@ UART_HandleTypeDef huart2;
 uint16_t rxBuffer[8];
 uint32_t lSamplePeak = 0;
 uint32_t rSamplePeak = 0;
-volatile bool output = false;
+bool output = false;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -77,8 +77,7 @@ static void MX_I2S1_Init(void);
 static void MX_USART2_UART_Init(void);
 static void MX_TIM14_Init(void);
 /* USER CODE BEGIN PFP */
-static void int2buf(char *buf, uint32_t num, char *chn);
-static void float2buf(uint8_t *buf, float num, char *chn);
+static void int2buf(uint8_t *buf, uint32_t num, char *chn);
 static bool storeSample();
 static void startupLeds();
 static void setLeds(uint32_t rmsValue);
@@ -122,7 +121,7 @@ int main(void)
   MX_USART2_UART_Init();
   MX_TIM14_Init();
   /* USER CODE BEGIN 2 */
-  // startupLeds();
+  startupLeds();
 
   HAL_I2S_Receive_DMA(&hi2s1, rxBuffer, 4);
   HAL_TIM_Base_Start_IT(&htim14);
@@ -140,7 +139,7 @@ int main(void)
 			}
 
 			// Send data via UART2
-			char buffer[11] = {"0"};
+			uint8_t buffer[11] = {"0"};
       int2buf(buffer, lSamplePeak, "L");
       HAL_UART_Transmit(&huart2, buffer, sizeof(buffer)/sizeof(*buffer), 0xFF);
       int2buf(buffer, rSamplePeak, "R");
@@ -376,16 +375,10 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
-static inline void int2buf(char *buf, uint32_t num, char *chn) {
+static inline void int2buf(uint8_t *buf, uint32_t num, char *chn) {
   // Set channel indicator
   buf[0] = *chn;
   sprintf(buf+1, "%8ul", num);
-}
-
-static inline void float2buf(uint8_t *buf, float num, char *chn) {
-  // Set channel indicator
-  buf[0] = *chn;
-  sprintf(buf+1, "%.9f", fabs(num));
 }
 
 static bool storeSample() {
@@ -411,28 +404,29 @@ static bool storeSample() {
 }
 
 static void startupLeds() {
+	uint8_t delay = 100;
   HAL_GPIO_WritePin(GPIOC, n20Pin_Pin, GPIO_PIN_SET);
-	HAL_Delay(500);
+	HAL_Delay(delay);
   HAL_GPIO_WritePin(GPIOA, n10Pin_Pin, GPIO_PIN_SET);
-  HAL_Delay(500);
+  HAL_Delay(delay);
   HAL_GPIO_WritePin(GPIOB, n7Pin_Pin, GPIO_PIN_SET);
-	HAL_Delay(500);
+	HAL_Delay(delay);
   HAL_GPIO_WritePin(GPIOB, n5Pin_Pin, GPIO_PIN_SET);
-	HAL_Delay(500);
+	HAL_Delay(delay);
   HAL_GPIO_WritePin(GPIOB, n3Pin_Pin, GPIO_PIN_SET);
-	HAL_Delay(500);
+	HAL_Delay(delay);
   HAL_GPIO_WritePin(GPIOA, n2Pin_Pin, GPIO_PIN_SET);
-	HAL_Delay(500);
+	HAL_Delay(delay);
   HAL_GPIO_WritePin(GPIOA, n1Pin_Pin, GPIO_PIN_SET);
-	HAL_Delay(500);
+	HAL_Delay(delay);
   HAL_GPIO_WritePin(GPIOC, pn0Pin_Pin, GPIO_PIN_SET);
-	HAL_Delay(500);
+	HAL_Delay(delay);
   HAL_GPIO_WritePin(GPIOB, p1Pin_Pin, GPIO_PIN_SET);
-	HAL_Delay(500);
+	HAL_Delay(delay);
   HAL_GPIO_WritePin(GPIOA, p2Pin_Pin, GPIO_PIN_SET);
-	HAL_Delay(500);
+	HAL_Delay(delay);
   HAL_GPIO_WritePin(GPIOA, p3Pin_Pin, GPIO_PIN_SET);
-	HAL_Delay(500);
+	HAL_Delay(delay);
   HAL_GPIO_WritePin(GPIOA, p3Pin_Pin|p2Pin_Pin|n2Pin_Pin|n1Pin_Pin|n10Pin_Pin, GPIO_PIN_RESET);
   HAL_GPIO_WritePin(GPIOC, n20Pin_Pin|pn0Pin_Pin, GPIO_PIN_RESET);
   HAL_GPIO_WritePin(GPIOB, p1Pin_Pin|n3Pin_Pin|n7Pin_Pin|n5Pin_Pin, GPIO_PIN_RESET);
@@ -442,7 +436,7 @@ static void setLeds(uint32_t rmsValue) {
   HAL_GPIO_WritePin(GPIOA, p3Pin_Pin|p2Pin_Pin|n2Pin_Pin|n1Pin_Pin|n10Pin_Pin, GPIO_PIN_RESET);
   HAL_GPIO_WritePin(GPIOC, n20Pin_Pin|pn0Pin_Pin, GPIO_PIN_RESET);
   HAL_GPIO_WritePin(GPIOB, p1Pin_Pin|n3Pin_Pin|n7Pin_Pin|n5Pin_Pin, GPIO_PIN_RESET);
-  // Values: 84762573	80666449	76068407	70737635	63152057	55983666	49568172	40023266	30826475	21597468	1686666
+
   if (rmsValue >= P3_THRESHOLD) {
       HAL_GPIO_WritePin(GPIOA, p3Pin_Pin|p2Pin_Pin|n2Pin_Pin|n1Pin_Pin|n10Pin_Pin, GPIO_PIN_SET);
       HAL_GPIO_WritePin(GPIOC, n20Pin_Pin|pn0Pin_Pin, GPIO_PIN_SET);
