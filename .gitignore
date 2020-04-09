@@ -34,3 +34,5 @@ bom/
 # Gerber export output
 out/
 cad/
+venv/
+.vscode/
