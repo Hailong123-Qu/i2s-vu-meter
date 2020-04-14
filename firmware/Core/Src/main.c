@@ -36,17 +36,17 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-#define P3_THRESHOLD		16736706
-#define P2_THRESHOLD		14773511
-#define P1_THRESHOLD		13314048
-#define PN0_THRESHOLD		11695486
-#define N1_THRESHOLD		10559338
-#define N2_THRESHOLD		9287514
-#define N3_THRESHOLD		8166018
-#define N5_THRESHOLD		6670090
-#define N7_THRESHOLD		5234913
-#define N10_THRESHOLD		3702249
-#define N20_THRESHOLD		1141805
+#define P3_THRESHOLD		10800000
+#define P2_THRESHOLD		9500000
+#define P1_THRESHOLD		8500000
+#define PN0_THRESHOLD		7500000
+#define N1_THRESHOLD		6800000
+#define N2_THRESHOLD		6000000
+#define N3_THRESHOLD		5250000
+#define N5_THRESHOLD		4250000
+#define N7_THRESHOLD		3350000
+#define N10_THRESHOLD		2350000
+#define N20_THRESHOLD		734000
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -64,9 +64,11 @@ UART_HandleTypeDef huart2;
 
 /* USER CODE BEGIN PV */
 uint16_t rxBuffer[8];
-uint32_t lSamplePeak = 0;
-uint32_t rSamplePeak = 0;
+uint64_t lSamplePeakAcc;
+uint64_t rSamplePeakAcc;
+uint16_t counter = 0;
 bool output = false;
+bool block = false;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -74,8 +76,8 @@ void SystemClock_Config(void);
 static void MX_GPIO_Init(void);
 static void MX_DMA_Init(void);
 static void MX_I2S1_Init(void);
-static void MX_USART2_UART_Init(void);
 static void MX_TIM14_Init(void);
+static void MX_USART2_UART_Init(void);
 /* USER CODE BEGIN PFP */
 static void int2buf(uint8_t *buf, uint32_t num, char *chn);
 static bool storeSample();
@@ -118,8 +120,8 @@ int main(void)
   MX_GPIO_Init();
   MX_DMA_Init();
   MX_I2S1_Init();
-  MX_USART2_UART_Init();
   MX_TIM14_Init();
+  MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
   startupLeds();
 
@@ -131,19 +133,29 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-			if (output) {
-				setLeds(lSamplePeak);
-				lSamplePeak = 0;
-				rSamplePeak = 0;
-				output = false;
-			}
+		if (output) {
+			block = true;
+			uint16_t tempCounter = counter;
+			uint64_t lTempAcc = lSamplePeakAcc;
+			uint64_t rTempAcc = lSamplePeakAcc;
+			counter = 0;
+			lSamplePeakAcc = 0;
+			rSamplePeakAcc = 0;
+			block = false;
+
+			uint32_t lPeak = lTempAcc / tempCounter;
+			uint32_t rPeak = rTempAcc / tempCounter;
+
+			setLeds(lPeak);
+			output = false;
 
 			// Send data via UART2
 			uint8_t buffer[11] = {"0"};
-      int2buf(buffer, lSamplePeak, "L");
+      int2buf(buffer, lPeak, "L");
       HAL_UART_Transmit(&huart2, buffer, sizeof(buffer)/sizeof(*buffer), 0xFF);
-      int2buf(buffer, rSamplePeak, "R");
+      int2buf(buffer, rPeak, "R");
       HAL_UART_Transmit(&huart2, buffer, sizeof(buffer)/sizeof(*buffer), 0xFF);
+		}
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -388,13 +400,17 @@ static bool storeSample() {
   lSample = abs(lSample >> 6);
   rSample = abs(rSample >> 6);
 
-  if (lSample > lSamplePeak) {
-  	lSamplePeak = lSample;
-  }
+//  if (lSample > lSamplePeak) {
+//  	lSamplePeak = lSample;
+//  }
+//
+//  if (rSample > rSamplePeak) {
+//    rSamplePeak = rSample;
+//	}
 
-  if (rSample > rSamplePeak) {
-    rSamplePeak = rSample;
-	}
+  lSamplePeakAcc += lSample;
+  rSamplePeakAcc += rSample;
+  counter++;
 
   if (lSample != 0 || rSample != 0) {
     return true;
@@ -484,11 +500,23 @@ static void setLeds(uint32_t rmsValue) {
 }
 
 void HAL_I2S_RxHalfCpltCallback (I2S_HandleTypeDef *hi2s) {
-  storeSample();
+	if (block) { return; }
+
+  bool led = storeSample();
+
+  if (led) {
+  	GPIOA->ODR |= GPIO_PIN_5;
+  }
 }
 
 void HAL_I2S_RxCpltCallback(I2S_HandleTypeDef *hi2s) {
-  storeSample();
+	if (block) { return; }
+
+	bool led = storeSample();
+
+  if (led) {
+  	GPIOA->ODR &= ~GPIO_PIN_5;
+  }
 }
 
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
